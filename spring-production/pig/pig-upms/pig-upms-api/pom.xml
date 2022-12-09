@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2020 pig4cloud Authors. All Rights Reserved.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.pig4cloud</groupId>
+        <artifactId>pig-upms</artifactId>
+        <version>3.5.2</version>
+    </parent>
+
+    <artifactId>pig-upms-api</artifactId>
+    <packaging>jar</packaging>
+
+    <description>pig 通用用户权限管理系统公共api模块</description>
+
+
+    <dependencies>
+        <!--core 工具类-->
+        <dependency>
+            <groupId>com.pig4cloud</groupId>
+            <artifactId>pig-common-core</artifactId>
+        </dependency>
+        <!--swagger-->
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+        </dependency>
+        <!--feign 注解依赖-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-openfeign-core</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!--mybatis 依赖-->
+        <dependency>
+            <groupId>com.pig4cloud</groupId>
+            <artifactId>pig-common-mybatis</artifactId>
+        </dependency>
+        <!-- excel 导入导出 https://github.com/pig-mesh/excel-spring-boot-starter -->
+        <dependency>
+            <groupId>com.pig4cloud.excel</groupId>
+            <artifactId>excel-spring-boot-starter</artifactId>
+        </dependency>
+    </dependencies>
+</project>

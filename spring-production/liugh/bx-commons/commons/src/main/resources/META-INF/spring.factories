@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.cloud.exceptionHandler.ExceptionHandlerAdvice,\
+com.cloud.swagger.SwaggerAutoConfiguration,\
+com.cloud.exceptionHandler.ResponseDataAdvice,\
+com.cloud.config.FeignInterceptorConfig

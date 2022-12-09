@@ -1,0 +1,116 @@
+bx:
+  ip: 127.0.0.1
+  nacos:
+    server-addr: 127.0.0.1:8848
+  swagger:
+    enabled: true
+    title: 用户认证中心
+    description: 用户认证中心接口文档
+    version: 1.0
+    base-package: com.cloud.user.controller
+
+server:
+  port: 8000
+spring:
+  application:
+    name: user-center
+  datasource:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://${bx.ip}:3306/user-center?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
+      username: root
+      password: root
+      initialSize: 5
+      minIdle: 5
+      maxActive: 20
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      filters: stat,wall,slf4j
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      useGlobalDataSourceStat: true
+      hikari:
+        minimum-idle: 5
+        maximum-pool-size: 20
+        connection-test-query: SELECT 1
+#  rabbitmq:
+#    host: ${bx.ip}
+#    port: 5672
+#    username: cloud-dev
+#    password: cloud-dev
+#    virtual-host: /
+  redis:
+      host: ${bx.ip}
+      port: 6379
+      password:
+      timeout: 10s
+      lettuce:
+        pool:
+          min-idle: 0
+          max-idle: 8
+          max-active: 8
+          max-wait: -1ms
+  mvc:
+    servlet:
+      load-on-startup: 1
+  aop:
+    proxy-target-class: true
+  zipkin:
+      discovery-client-enabled: false
+#      base-url: http://localhost:9411
+#      enabled: true
+#      sender:
+#        type: web
+  cloud:
+    nacos:
+      config:
+        server-addr: ${bx.nacos.server-addr}
+        file-extension: yml
+        shared-dataids: common.yml
+        refreshable-dataids: common.yml
+      discovery:
+        server-addr: ${bx.nacos.server-addr}
+
+access_token:
+  store-jwt: false
+  jwt-signing-key: liugh=$==+_+%0%:)(:)
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+mybatis-plus:
+  mapper-locations: classpath:/mybatis-mappers/*Mapper.xml
+  typeAliasesPackage: com.cloud.model.user
+
+
+logging:
+  level:
+    root: info
+    com.cloud: debug
+  file: logs/${spring.application.name}.log
+
+## tx-manager 配置
+tx-lcn:
+  ribbon:
+    loadbalancer:
+      dtx:
+        enabled: true
+  logger:
+    enabled: true
+    driver-class-name: com.mysql.jdbc.Driver
+    jdbc-url: jdbc:mysql://${bx.ip}:3306/tx_logger?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: root
+  client:
+    manager-address: ${bx.ip}:8070

@@ -1,0 +1,103 @@
+server:
+  port: 8090
+
+bx:
+  ip: 127.0.0.1
+  nacos:
+    server-addr: 127.0.0.1:8848
+  swagger:
+    enabled: true
+    title: 文件服务
+    description: 文件服务接口文档
+    version: 1.0
+    base-package: com.cloud.files.controller
+
+spring:
+  application:
+    name: files-server
+  mvc:
+    servlet:
+      load-on-startup: 1
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://${bx.ip}:3306/cloud_files?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
+    username: root
+    password: root
+#    initialSize: 5
+#    minIdle: 5
+#    maxActive: 20
+#    maxWait: 60000
+#    timeBetweenEvictionRunsMillis: 60000
+#    minEvictableIdleTimeMillis: 300000
+#    validationQuery: SELECT 1 FROM DUAL
+#    testWhileIdle: true
+#    testOnBorrow: false
+#    testOnReturn: false
+#    poolPreparedStatements: true
+#    maxPoolPreparedStatementPerConnectionSize: 20
+#    filters: stat,wall,slf4j
+#    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+#    useGlobalDataSourceStat: true
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      connection-test-query: SELECT 1
+  servlet:
+    multipart:
+      max-file-size: 1000MB # 单个文件大小
+      max-request-size: 10000MB # 设置总上传的数据大小
+      enabled: true #开启
+  cloud:
+    nacos:
+      config:
+        server-addr: ${bx.nacos.server-addr}
+        file-extension: yml
+        shared-dataids: common.yml
+        refreshable-dataids: common.yml
+      discovery:
+        server-addr: ${bx.nacos.server-addr}
+
+mybatis-plus:
+  mapper-locations: classpath:/mybatis-mappers/*Mapper.xml
+  typeAliasesPackage: com.cloud.files.entity
+
+logging:
+  config: classpath:config/logback-spring.xml
+  level:
+    root: info
+    com.cloud: debug
+#  file: logs/${spring.application.name}.log
+
+#多个用逗号隔开
+logstash:
+  host: 192.168.1.75:5044
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+security:
+  oauth2:
+    resource:
+      user-info-uri: http://${bx.ip}:8000/user-me
+      prefer-token-info: false
+
+## tx-manager 配置
+tx-lcn:
+  ribbon:
+    loadbalancer:
+      dtx:
+        enabled: true
+  logger:
+    enabled: true
+    driver-class-name: com.mysql.jdbc.Driver
+    jdbc-url: jdbc:mysql://${bx.ip}:3306/tx_logger?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: root
+  client:
+    manager-address: ${bx.ip}:8070

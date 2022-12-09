@@ -1,0 +1,75 @@
+server:
+  port: 8099
+
+bx:
+  ip: 127.0.0.1
+  nacos:
+    server-addr: 127.0.0.1:8848
+
+spring:
+  application:
+    name: transaction-server
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://${bx.ip}:3306/tx-manager?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: root
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+  cloud:
+    nacos:
+      config:
+        server-addr: ${bx.nacos.server-addr}
+        file-extension: yml
+        shared-dataids: common.yml
+        refreshable-dataids: common.yml
+      discovery:
+        server-addr: ${bx.nacos.server-addr}
+  redis:
+    host: ${bx.ip}
+    port: 6379
+    password:
+    timeout: 10s
+    lettuce:
+      pool:
+        min-idle: 0
+        max-idle: 8
+        max-active: 8
+        max-wait: -1ms
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+
+#logging:
+#  config: classpath:config/logback-spring.xml
+#  level:
+#    root: info
+#    com.cloud: debug
+#  file: logs/${spring.application.name}.log
+
+
+tx-lcn:
+  logger:
+    enabled: true
+  driver-class-name: com.mysql.jdbc.Driver
+  jdbc-url: jdbc:mysql://${bx.ip}:3306/tx-logger?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull
+  username: root
+  password: root
+  manager:
+    host: ${bx.ip}
+    port: 8070    # TxClient连接请求端口
+    admin-key: admin    # TM后台登陆密码，默认值为codingapi
+    dtx-time: 15000000     #分布式事务执行总时间(ms). 默认为8000
+
+#多个用逗号隔开
+#logstash:
+#  host: 127.0.0.1:5044

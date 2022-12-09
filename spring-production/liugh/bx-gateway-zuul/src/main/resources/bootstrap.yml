@@ -1,0 +1,78 @@
+bx:
+  nacos:
+    server-addr: 127.0.0.1:8848
+spring:
+  application:
+    name: gateway-zuul
+  mvc:
+    servlet:
+      load-on-startup: 1
+  zipkin:
+    base-url: http://127.0.0.1:9411
+    enabled: true
+    sender:
+     type: web
+  cloud:
+    nacos:
+      config:
+          server-addr: ${bx.nacos.server-addr}
+          file-extension: yml
+          shared-dataids: common.yml
+          refreshable-dataids: common.yml
+      discovery:
+          server-addr: ${bx.nacos.server-addr}
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+zuul:
+  ignored-services: '*'
+  sensitive-headers: Access-Control-Allow-Origin
+  #需要忽略的头部信息，不在传播到其他服务
+  ignored-headers: Access-Control-Allow-Credentials,Access-Control-Allow-Origin,Vary,X-Frame-Options,token
+
+  routes:
+    api-u:
+      path: /api-u/**
+      serviceId: user-center
+    api-f:
+      path: /api-f/**
+      serviceId: files-server
+  host:
+    connect-timeout-millis: 10000
+    socket-timeout-millis: 60000
+  add-proxy-headers: true
+  ribbon:
+    eager-load:
+      enabled: true
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+cron:
+  black-ip: 0 0/5 * * * ?
+
+logging:
+  level:
+    root: info
+    com.cloud: debug
+  file: logs/${spring.application.name}.log
+security:
+  oauth2:
+    resource:
+      user-info-uri: http://127.0.0.1:8000/user-me
+      prefer-token-info: false

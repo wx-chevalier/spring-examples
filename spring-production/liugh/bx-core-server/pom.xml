@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>bx-cloud</artifactId>
+        <groupId>com.cloud</groupId>
+        <version>2.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>bx-core-server</artifactId>
+
+    <name>bx-core-server</name>
+    <packaging>pom</packaging>
+
+    <modules>
+        <!-- 用户中心/认证中心/注册配置中心 -->
+        <module>user-center</module>
+        <module>register-config-center</module>
+    </modules>
+
+
+</project>

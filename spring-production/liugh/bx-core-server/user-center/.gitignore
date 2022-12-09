@@ -1,0 +1,10 @@
+/.settings/
+/target/
+/.classpath
+/.project
+/logs/
+/*.iml
+
+/.txlcn/
+*.db
+/*.db

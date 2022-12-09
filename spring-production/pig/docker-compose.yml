@@ -1,0 +1,94 @@
+version: '3'
+services:
+  pig-mysql:
+    build:
+      context: ./db
+    environment:
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_ROOT_PASSWORD: root
+    restart: always
+    container_name: pig-mysql
+    image: pig-mysql
+    ports:
+      - 3306:3306
+
+  pig-redis:
+    image: redis:7.0.0
+    ports:
+      - 6379:6379
+    restart: always
+    container_name: pig-redis
+    hostname: pig-redis
+
+  pig-register:
+    build:
+      context: ./pig-register
+    restart: always
+    ports:
+      - 8848:8848
+    container_name: pig-register
+    hostname: pig-register
+    image: pig-register
+
+  pig-gateway:
+    build:
+      context: ./pig-gateway
+    restart: always
+    ports:
+      - 9999:9999
+    container_name: pig-gateway
+    hostname: pig-gateway
+    image: pig-gateway
+
+  pig-auth:
+    build:
+      context: ./pig-auth
+    restart: always
+    container_name: pig-auth
+    hostname: pig-auth
+    image: pig-auth
+
+  pig-upms:
+    build:
+      context: ./pig-upms/pig-upms-biz
+    restart: always
+    container_name: pig-upms
+    hostname: pig-upms
+    image: pig-upms
+
+  pig-monitor:
+    build:
+      context: ./pig-visual/pig-monitor
+    restart: always
+    ports:
+      - 5001:5001
+    container_name: pig-monitor
+    hostname: pig-monitor
+    image: pig-monitor
+
+  pig-sentinel:
+    build:
+      context: ./pig-visual/pig-sentinel-dashboard
+    restart: always
+    image: pig-sentinel
+    container_name: pig-sentinel
+    ports:
+      - 5003:5003
+
+  pig-codegen:
+    build:
+      context: ./pig-visual/pig-codegen
+    restart: always
+    container_name: pig-codegen
+    hostname: pig-codegen
+    image: pig-codegen
+
+  pig-job:
+    build:
+      context: ./pig-visual/pig-xxl-job-admin
+    restart: always
+    container_name: pig-job
+    hostname: pig-job
+    image: pig-job
+    ports:
+      - 5004:5004

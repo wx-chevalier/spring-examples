@@ -1,0 +1,26 @@
+spring:
+  shardingsphere:
+    datasource:
+      names: shardingalgorithm
+      shardingalgorithm:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: org.h2.Driver
+        jdbc-url: jdbc:h2:mem:test_shardingjdbc_algorithm;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;MODE=MYSQL;INIT=runscript from 'classpath:sql/shardingjdbcalgorithm/V1.0.1__collin_test_shardingjdbc_algorithm.sql'
+        username: root
+        password: 123456
+    rules:
+      sharding:
+        sharding-algorithms:
+          order_bill_table_complex:
+            type: ORDER_BILL_TABLE_TYPE
+        tables:
+          t_order_bill:
+            actual-data-nodes: shardingalgorithm.t_order_bill_$->{0..19}
+            table-strategy:
+              complex:
+                # 参考：https://github.com/apache/shardingsphere/blob/5.0.0/shardingsphere-features/shardingsphere-sharding/shardingsphere-sharding-core/src/test/resources/yaml/sharding-rule.yaml
+                # https://github.com/apache/shardingsphere/blob/5.0.0/shardingsphere-features/shardingsphere-sharding/shardingsphere-sharding-core/src/test/resources/META-INF/services/org.apache.shardingsphere.sharding.spi.ShardingAlgorithm
+                sharding-algorithm-name: order_bill_table_complex
+                sharding-columns: f_buyer,f_order_no
+    props:
+      sql-show: true

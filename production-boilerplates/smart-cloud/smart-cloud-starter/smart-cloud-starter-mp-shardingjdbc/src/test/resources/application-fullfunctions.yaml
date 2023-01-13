@@ -1,0 +1,80 @@
+spring:
+  datasource:
+    dynamic:
+      primary: datasource-log
+      strict: true
+      datasource:
+        datasource-log:
+          url: jdbc:h2:mem:test_shardingjdbcfullfunctions_dynamicdatasource_log;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;MODE=MYSQL
+          username: root
+          password: 123456
+          driver-class-name: org.h2.Driver
+          init:
+            schema: classpath:sql/fullfunctions/V1.0.2__collin_test_shardingjdbcfullfunctions_dynamicdatasource_log.sql
+  shardingsphere:
+    datasource:
+      names: shardingordermaster,shardingorderslave-0,shardingorderslave-1,shardingproduct
+      shardingordermaster:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: org.h2.Driver
+        jdbc-url: jdbc:h2:mem:test_shardingjdbcfullfunctions_master_order;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;MODE=MYSQL;INIT=runscript from 'classpath:sql/fullfunctions/V1.0.1__collin_test_shardingjdbcfullfunctions_master_order.sql'
+        username: root
+        password: 123456
+      shardingorderslave-0:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: org.h2.Driver
+        jdbc-url: jdbc:h2:mem:test_shardingjdbcfullfunctions_slave_order0;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;MODE=MYSQL;INIT=runscript from 'classpath:sql/fullfunctions/V1.0.1.1__collin_test_shardingjdbcfullfunctions_slave_order0.sql'
+        username: root
+        password: 123456
+      shardingorderslave-1:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: org.h2.Driver
+        jdbc-url: jdbc:h2:mem:test_shardingjdbcfullfunctions_slave_order1;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;MODE=MYSQL;INIT=runscript from 'classpath:sql/fullfunctions/V1.0.1.2__collin_test_shardingjdbcfullfunctions_slave_order1.sql'
+        username: root
+        password: 123456
+      shardingproduct:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: org.h2.Driver
+        jdbc-url: jdbc:h2:mem:test_shardingjdbcfullfunctions_product;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;MODE=MYSQL;INIT=runscript from 'classpath:sql/fullfunctions/V1.0.0__collin_test_shardingjdbcfullfunctions_product.sql'
+        username: root
+        password: 123456
+    rules:
+      readwrite-splitting:
+        data-sources:
+          sharding-order:
+            type: Static
+            props:
+              write-data-source-name: shardingordermaster
+              read-data-source-names: shardingorderslave-0, shardingorderslave-1
+            load-balancer-name: round_robin
+        load-balancers:
+          round_robin:
+            type: ROUND_ROBIN
+      sharding:
+        sharding-algorithms:
+          #sharding-algorithm-name: order-bill-inline 命名不能使用’_’,不然会报错，找不到分片规则
+          order-bill-inline:
+            props:
+              algorithm-expression: t_order_bill_$->{f_id % 20}
+            type: INLINE
+          product-info-inline:
+            props:
+              algorithm-expression: t_product_info_$->{f_id % 20}
+            type: INLINE
+        tables:
+          t_order_bill:
+            actual-data-nodes: sharding-order.t_order_bill_$->{0..19}
+            table-strategy:
+              standard:
+                sharding-algorithm-name: order-bill-inline
+                sharding-column: f_id
+          t_rpc_log:
+            actual-data-nodes: sharding-order.t_rpc_log
+          t_product_info:
+            actual-data-nodes: shardingproduct.t_product_info_$->{0..19}
+            table-strategy:
+              standard:
+                sharding-algorithm-name: product-info-inline
+                sharding-column: f_id
+    props:
+      sql-show: true

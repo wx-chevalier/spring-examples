@@ -1,0 +1,6 @@
+smart:
+  mock:
+    api: true
+    method: true
+    whilelist:
+      - io.github.smart.cloud.starter.mock.test.prepare.service.StockService.query

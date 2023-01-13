@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+io.github.smart.cloud.starter.rabbitmq.autoconfigure.RabbitMqAdapterAutoConfiguration,\
+io.github.smart.cloud.starter.rabbitmq.autoconfigure.RabbitMqConsumerFailRetryAutoConfiguration

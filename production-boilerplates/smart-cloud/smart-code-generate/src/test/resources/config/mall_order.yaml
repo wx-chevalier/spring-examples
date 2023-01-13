@@ -1,0 +1,17 @@
+#db config
+db:
+  url: jdbc:h2:mem:demo_order;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false;MODE=MYSQL
+  username: root
+  password: 123456
+  driverClassName: org.h2.Driver
+  schema: sql/demo_order.sql
+  
+#code generate config  
+code:
+  author: collin
+  #生成类型：1、数据库整个表全部生成；2、只生成指定的表；3、除了指定的表，全部生成
+  type: 2
+  #指定要生成的表，多个表用英文逗号（,）隔开
+  specifiedTables: t_order_bill_0,t_order_delivery_info_0
+  #启动类包名
+  mainClassPackage: org.smartframework.cloud.examples.mall.order

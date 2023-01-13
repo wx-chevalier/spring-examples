@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+io.github.smart.cloud.starter.job.autoconfigure.XxlJobAutoConfiguration,\
+io.github.smart.cloud.starter.job.trace.XxlJobBeanPostProcessor

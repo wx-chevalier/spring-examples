@@ -1,0 +1,48 @@
+# Tomcat
+server:
+  port: 8080
+
+spring:
+  # 环境 dev|test|pro
+  profiles:
+    active: test
+  # jackson时间格式化
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  redis:
+    host: localhost
+    port: 6379
+    password:       # 密码（默认为空）
+  servlet:
+    multipart:
+      maxFileSize: 104857600 #100MB
+      maxRequestSize: 104857600 #100MB
+
+# 暴露监控端点后会打印所有的端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+#填充框架配置
+autofull:
+  show-log: false
+  max-level: 1
+
+# mybaits-plus配置
+mybatis-plus:
+  # MyBatis Mapper所对应的XML文件位置
+  mapper-locations: classpath:/mapper/**/*Mapper.xml
+  global-config:
+    # 关闭MP3.0自带的banner
+    banner: false
+    db-config:
+      # 主键类型 0:数据库ID自增 1.未定义 2.用户输入 3 id_worker 4.uuid 5.id_worker字符串表示
+      id-type: 0
+      #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+      field-strategy: 1
+      # 默认数据库表下划线命名
+      table-underline: true
+

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.ylzl.eden.demo</groupId>
+		<artifactId>eden-demo-mvc</artifactId>
+		<version>2.4.13.20221030</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	<artifactId>eden-demo-mvc-start</artifactId>
+	<version>2.4.13.20221030</version>
+	<packaging>jar</packaging>
+	<name>eden-demo-mvc-start</name>
+	<description>应用启动入口</description>
+
+	<properties>
+		<start-class>org.ylzl.eden.demo.MvcApplication</start-class>
+		<build.layers.enabled>true</build.layers.enabled>
+	</properties>
+
+	<build>
+		<finalName>${project.name}-${project.version}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<configuration>
+					<from>
+						<image>openjdk:11-jdk</image>
+					</from>
+					<to>
+						<image>${docker.image}</image>
+						<auth>
+							<username>${docker.username}</username>
+							<password>${docker.password}</password>
+						</auth>
+						<tags>
+							<tag>${project.version}</tag>
+						</tags>
+					</to>
+					<container>
+						<entrypoint>
+							<shell>bash</shell>
+							<option>-c</option>
+							<arg>/entrypoint.sh</arg>
+						</entrypoint>
+						<ports>
+							<port>8080</port>
+						</ports>
+						<environment>
+							<TZ>Asia/Shanghai</TZ>
+							<SPRING_OUTPUT_ANSI_ENABLED>ALWAYS</SPRING_OUTPUT_ANSI_ENABLED>
+							<JAVA_OPTS>-Xms256m -Xmx256m</JAVA_OPTS>
+							<ENV_OPTS/>
+							<JAVA_SLEEP>1</JAVA_SLEEP>
+						</environment>
+						<creationTime>USE_CURRENT_TIMESTAMP
+						</creationTime>
+						<mainClass>${start-class}</mainClass>
+					</container>
+					<extraDirectories>
+						<paths>src/main/docker</paths>
+						<permissions>
+							<permission>
+								<file>/entrypoint.sh</file>
+								<mode>755</mode>
+							</permission>
+						</permissions>
+					</extraDirectories>
+					<allowInsecureRegistries>true
+					</allowInsecureRegistries>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>pl.project13.maven</groupId>
+				<artifactId>git-commit-id-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>ru.trylogic.maven.plugins</groupId>
+				<artifactId>redis-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<!-- Web 组件 -->
+		<dependency>
+			<groupId>org.ylzl.eden.demo</groupId>
+			<artifactId>eden-demo-mvc-web</artifactId>
+		</dependency>
+
+		<!-- 开发组件 -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-spring-framework</artifactId>
+		</dependency>
+
+		<!-- 监控组件 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+		<!-- 测试组件 -->
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-spock-spring-boot-starter</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>

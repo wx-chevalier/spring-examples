@@ -1,0 +1,104 @@
+@startuml
+
+!if %variable_exists("$THEME")
+title 架构图 - $THEME theme
+!else
+title 架构图
+!endif
+
+'skinparam BackgroundColor transparent
+
+[eden-architect] <<架构>>
+
+[eden-component] <<组件>>
+[eden-dependencies] <<依赖管理>>
+[eden-parent] <<父工程>>
+[eden-commons] <<工具集>>
+[eden-extensions] <<扩展点组件>>
+[eden-spring-framework] <<基础框架>>
+[eden-spring-data] <<数据存储组件>>
+[eden-spring-security] <<授权认证组件>>
+[eden-spring-integration] <<第三方集成组件>>
+[eden-spring-boot] <<Spring Boot组件>>
+[eden-spring-boot-test] <<Spring Boot组件测试>>
+[eden-spring-boot-starters] <<Spring Boot组件自动装配>>
+[eden-spring-cloud] <<Spring Cloud组件>>
+[eden-spring-cloud-starters] <<Spring Cloud组件自动装配>>
+[eden-spring-test] <<Spring测试组件>>
+[eden-solutions] <<解决方案>>
+[eden-cola] <<COLA架构>>
+[eden-cola-extensions] <<COLA扩展点>>
+[eden-cola-statemachine] <<COLA状态机>>
+[eden-plugins] <<插件集合>>
+[eden-tests] <<测试集合>>
+[eden-deployment-tests] <<部署测试集>>
+[eden-integration-tests] <<集成测试集>>
+[eden-performance-tests] <<性能测试集>>
+[eden-smoke-tests] <<冒烟测试集>>
+
+skinparam component {
+ 	backgroundColor<<组件>> SkyBlue
+    backgroundColor<<依赖管理>> SkyBlue
+    backgroundColor<<父工程>> SkyBlue
+    backgroundColor<<工具集>> SkyBlue
+    backgroundColor<<扩展点组件>> SkyBlue
+    backgroundColor<<基础框架>> SkyBlue
+	backgroundColor<<数据存储组件>> Pink
+	backgroundColor<<授权认证组件>> Pink
+	backgroundColor<<第三方集成组件>> Pink
+	backgroundColor<<Spring Boot组件>> Pink
+	backgroundColor<<Spring Cloud组件>> Pink
+	backgroundColor<<Spring Boot组件测试>> PaleGreen
+    backgroundColor<<Spring Boot组件自动装配>> PaleGreen
+    backgroundColor<<Spring Cloud组件自动装配>> PaleGreen
+    backgroundColor<<Spring测试组件>> PaleGreen
+    backgroundColor<<COLA架构>> Plum
+    backgroundColor<<COLA扩展点>> Plum
+    backgroundColor<<COLA状态机>> Plum
+	backgroundColor<<解决方案>> PaleGreen
+    backgroundColor<<插件集合>> Khaki
+	backgroundColor<<测试集合>> Khaki
+	backgroundColor<<部署测试集>> Khaki
+	backgroundColor<<集成测试集>> Khaki
+	backgroundColor<<性能测试集>> Khaki
+	backgroundColor<<冒烟测试集>> Khaki
+}
+
+[eden-component] --> [eden-architect]
+[eden-dependencies] --> [eden-component]
+[eden-parent] --> [eden-dependencies]
+[eden-commons] --> [eden-parent]
+[eden-extensions] --> [eden-commons]
+[eden-spring-framework] --> [eden-commons]
+[eden-spring-framework] --> [eden-extensions]
+[eden-spring-boot] --> [eden-spring-framework]
+[eden-spring-data] --> [eden-spring-framework]
+[eden-spring-security] --> [eden-spring-framework]
+[eden-spring-integration] --> [eden-spring-framework]
+[eden-spring-cloud] -l-> [eden-spring-boot]
+[eden-spring-cloud] -r-> [eden-spring-security]
+[eden-spring-test] <-- [eden-spring-framework]
+[eden-spring-test] <-- [eden-spring-data]
+[eden-spring-test] <-- [eden-spring-integration]
+[eden-spring-boot-starters] --> [eden-spring-boot]
+[eden-spring-boot-starters] --> [eden-spring-data]
+[eden-spring-boot-starters] --> [eden-spring-security]
+[eden-spring-boot-starters] --> [eden-spring-integration]
+[eden-spring-boot-test] <-- [eden-spring-boot]
+[eden-spring-boot-test] <-- [eden-spring-cloud]
+[eden-spring-cloud-starters] --> [eden-spring-cloud]
+[eden-solutions] --> [eden-extensions]
+[eden-solutions] --> [eden-spring-framework]
+[eden-solutions] ..> [eden-spring-integration]
+[eden-cola] --> [eden-commons]
+[eden-cola] -u-> [eden-spring-framework]
+[eden-cola-extensions] -u-> [eden-cola]
+[eden-cola-statemachine] -r-> [eden-cola]
+[eden-architect] <.u. [eden-plugins]
+[eden-architect] <.u. [eden-tests]
+[eden-tests] <-u- [eden-deployment-tests]
+[eden-tests] <-u- [eden-integration-tests]
+[eden-tests] <-u- [eden-performance-tests]
+[eden-tests] <-u- [eden-smoke-tests]
+
+@enduml

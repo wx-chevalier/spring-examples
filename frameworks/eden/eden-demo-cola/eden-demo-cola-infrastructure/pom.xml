@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2012-2019 the original author or authors.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.ylzl.eden.demo</groupId>
+		<artifactId>eden-demo-cola</artifactId>
+		<version>2.4.13-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	<artifactId>eden-demo-cola-infrastructure</artifactId>
+	<packaging>jar</packaging>
+	<name>eden-demo-cola-infrastructure</name>
+	<description>基础设施层</description>
+
+	<properties>
+		<maven.deploy.skip>true</maven.deploy.skip>
+	</properties>
+
+	<dependencies>
+		<!-- 领域层依赖 -->
+		<dependency>
+			<groupId>org.ylzl.eden.demo</groupId>
+			<artifactId>eden-demo-cola-domain</artifactId>
+		</dependency>
+
+		<!-- API层依赖 -->
+		<dependency>
+			<groupId>org.ylzl.eden.demo</groupId>
+			<artifactId>eden-demo-cola-client</artifactId>
+		</dependency>
+
+		<!-- 开发组件 -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- 测试组件 -->
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-spock-spring-boot-starter</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- 数据库组件 -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- 数据库连接池组件 -->
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-hikaricp-spring-boot-starter</artifactId>
+		</dependency>
+
+		<!-- 数据库访问组件 -->
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-mybatis-spring-boot-starter</artifactId>
+		</dependency>
+
+		<!-- 数据库版本控制组件 -->
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-liquibase-spring-boot-starter</artifactId>
+		</dependency>
+
+		<!-- 动态数据源组件 -->
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-dynamic-datasource-spring-boot-starter</artifactId>
+		</dependency>
+
+		<!-- 分库分表组件 -->
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-shardingsphere-spring-boot-starter</artifactId>
+		</dependency>
+
+		<!-- 缓存组件 -->
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-redis-spring-boot-starter</artifactId>
+		</dependency>
+
+		<!-- 消息队列组件 -->
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-rocketmq-spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-dynamic-mq-spring-boot-starter</artifactId>
+		</dependency>
+
+		<!-- 动态线程池组件 -->
+		<dependency>
+			<groupId>org.ylzl</groupId>
+			<artifactId>eden-dynamic-tp-spring-cloud-starter</artifactId>
+		</dependency>
+    </dependencies>
+</project>

@@ -1,0 +1,78 @@
+logging:
+  file:
+    name: ${spring.application.name}
+  config: classpath:log4j2.yml
+  level:
+    ROOT: INFO
+    org.ylzl.eden.demo: INFO
+
+server:
+  port: 8081
+  shutdown: graceful
+  compression:
+    enabled: true
+    min-response-size: 1024
+  undertow:
+    buffer-size: 1024
+    direct-buffers: true
+    threads:
+      io: 16
+      worker: 256
+
+spring:
+  application:
+    name: eden-demo-mvc
+  profiles:
+    active: dev # 默认启用开发环境
+  data:
+    redis:
+      repositories:
+        enabled: true
+  # 数据源
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      connectionTimeout: 5000
+      minimumIdle: 2
+      maximumPoolSize: 10
+      idleTimeout: 300000
+      maxLifetime: 1200000
+  # 缓存数据库
+  redis:
+    lettuce:
+      pool:
+        min-idle: 1
+        max-idle: 64
+        max-active: 64
+        max-wait: -1
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    default-property-inclusion: non_null
+    serialization:
+      indent-output: true
+    time-zone: GMT+8
+  messages:
+    basename: i18n/messages
+  main:
+    allow-bean-definition-overriding: true
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+  thymeleaf:
+    mode: HTML
+    cache: true
+
+# ORM 组件
+mybatis-plus:
+  global-config:
+    banner: false
+  configuration:
+    map-underscore-to-camel-case: true
+    auto-mapping-behavior: full
+
+# 在线诊断工具
+arthas:
+  agent-id: ${spring.application.name}@${random.value}
+  tunnel-server: ws://localhost:7777/ws
+  session-timeout: 1800
+  telnet-port: 0
+  http-port: 0

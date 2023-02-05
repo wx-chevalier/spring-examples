@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('基本资料')"/>
+    <link rel="stylesheet" th:href="@{/static/admin/css/other/person.css}"/>
+    <style type="text/css">
+        .info-list-item {
+            position: relative;
+            padding-bottom: 8px;
+        }
+
+        .info-list-item > .layui-icon {
+            position: absolute;
+        }
+
+        .info-list-item > p {
+            padding-left: 30px;
+        }
+
+    </style>
+</head>
+<!-- 正文开始 -->
+<div class="pear-container">
+    <div class="layui-row layui-col-space15">
+        <!-- 左 -->
+        <div class="layui-col-sm12 layui-col-md3">
+            <div class="layui-card">
+                <div class="layui-card-body" style="padding: 25px;">
+                    <div class="text-center layui-text">
+                        <div class="user-info-head" id="userAvatar">
+                            <img id="Avatar" src="" width="115px" height="115px" alt=""/>
+                        </div>
+                        <h2 id="nickname" style="padding-top: 20px;" th:text="${user.nickname}"></h2>
+                        <!-- <p style="padding-top: 8px;"></p> -->
+                    </div>
+                    <div class="layui-text" style="padding-top: 30px;">
+                        <div class="info-list-item">
+                            <i class="layui-icon layui-icon-username"></i>
+                            <p id="username" th:text="${user.username}"></p>
+                        </div>
+
+                        <div class="info-list-item">
+                            <i class="layui-icon layui-icon-group"></i>
+                            <p id="depName" th:text="${user.depName}"></p>
+                        </div>
+
+                        <div class="info-list-item">
+                            <i class="layui-icon layui-icon-chart-screen"></i>
+                            <p id="posName" th:text="${user.posName}"></p>
+                        </div>
+
+                        <div class="info-list-item">
+                            <i class="layui-icon layui-icon-cellphone"></i>
+                            <p id="phonenumber" th:text="${user.phonenumber}"></p>
+                        </div>
+
+                        <div class="info-list-item">
+                            <i class="layui-icon layui-icon-email"></i>
+                            <p id="email" th:text="${user.email}"></p>
+                        </div>
+
+                        <div class="info-list-item">
+                            <i class="layui-icon layui-icon-time"></i>
+                            <p th:text="${user.createTime}"></p>
+                        </div>
+                    </div>
+                    <div class="dash"></div>
+                    <h3>标签</h3>
+                    <div class="layui-badge-list" style="padding-top: 6px;">
+                        <span class="layui-badge layui-bg-gray" th:text="${fuce.name}"></span>
+                        <!--<span class="layui-badge layui-bg-gray">Roses</span>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 右 -->
+        <div class="layui-col-sm12 layui-col-md9">
+            <div class="layui-card">
+                <div class="layui-card-body layui-text">
+                    <div class="layui-tab layui-tab-brief" lay-filter="userInfoTab">
+                        <ul class="layui-tab-title">
+                            <li class="layui-this">基本信息</li>
+                            <li>修改密码</li>
+                        </ul>
+                        <div class="layui-tab-content">
+                            <div class="layui-tab-item layui-form layui-show" lay-filter="userInfoForm">
+                                <div class="layui-form" style="max-width: 600px;padding-top: 25px;" th:object="${user}">
+                                    <input type="hidden" name="id" th:field="${user.id}"/>
+
+                                    <div class="layui-form-item" style="padding-top: 10px">
+                                        <label class="layui-form-label">账号:<span style="color: red;">*</span></label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="username" th:field="${user.username}" class="layui-input" placeholder="请输入账号" lay-verify="required" disabled/>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item" style="padding-top: 10px">
+                                        <label class="layui-form-label">用户名称:<span style="color: red;">*</span></label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="nickname" th:field="${user.nickname}" class="layui-input" placeholder="请输入用户名称" lay-verify="required" required/>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item" style="padding-top: 10px">
+                                        <label class="layui-form-label">性别:<span style="color: red;">*</span></label>
+                                        <div class="layui-input-block">
+                                            <input type="radio" name="sex" value="0" title="男" lay-filter="1" lay-verify="required" required checked>
+                                            <input type="radio" name="sex" value="1" title="女" lay-filter="2" lay-verify="required" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item" style="padding-top: 10px">
+                                        <label class="layui-form-label">联系电话:<span style="color: red;">*</span></label>
+                                        <div class="layui-input-block">
+                                            <input type="text" name="phonenumber" th:field="${user.phonenumber}" placeholder="请输入手机号码" class="layui-input" lay-verify="required" required/>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item" style="padding-top: 10px">
+                                        <label class="layui-form-label">邮箱:<span style="color: red;">*</span></label>
+                                        <div class="layui-input-block">
+                                            <input type="email" name="email" th:field="${user.email}" class="layui-input" placeholder="请输入邮箱" lay-verify="required|email" required/>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item" style="padding-top: 20px">
+                                        <div class="layui-input-block">
+                                            <button class="pear-btn pear-btn-primary pear-btn-md" lay-filter="userInfoSubmit" lay-submit>
+                                                <i class="layui-icon layui-icon-ok"></i>
+												提交
+                                            </button>
+                                            <button class="pear-btn pear-btn-danger pear-btn-md del">
+                                                <i class="layui-icon layui-icon-close"></i>
+                                                关闭
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="layui-form layui-tab-item" lay-filter="modify_password">
+                                <div id="form-user-resetPwd" class="layui-form" style="max-width: 400px;padding-top: 25px;" th:object="${user}">
+                                    <input type="hidden" name="id" th:field="${user.id}"/>
+
+                                    <div class="layui-form-item" style="padding-top: 10px">
+                                        <label class="layui-form-label">旧密码:<span style="color: red;">*</span></label>
+                                        <div class="layui-input-block">
+                                            <input type="password" name="oldPassword" class="layui-input" placeholder="请输入旧密码" lay-verify="required" required/>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item" style="padding-top: 10px">
+                                        <label class="layui-form-label">新密码:<span style="color: red;">*</span></label>
+                                        <div class="layui-input-block">
+                                            <input type="password" name="newPassword" class="layui-input" placeholder="请输入新密码" lay-verify="required" required/>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item" style="padding-top: 10px">
+                                        <label class="layui-form-label">确认密码:<span style="color: red;">*</span></label>
+                                        <div class="layui-input-block">
+                                            <input type="password" name="confirmPassword" class="layui-input" placeholder="请确认密码" lay-verify="required" required/>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item" style="padding-top: 20px">
+                                        <div class="layui-input-block">
+                                            <button class="pear-btn pear-btn-primary pear-btn-md" lay-filter="userPasswdSubmit" lay-submit>
+                                                <i class="layui-icon layui-icon-ok"></i>
+                                                提交
+                                            </button>
+                                            <button class="pear-btn pear-btn-danger pear-btn-sm del">
+                                                <i class="layui-icon layui-icon-close"></i>
+                                                关闭
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<th:block th:include="include :: footer"/>
+<script>
+    layui.use(['form','jquery', 'element', 'layer'], function () {
+        let element = layui.element;
+        let layer = layui.layer;
+        let $ = layui.jquery;
+        let form = layui.form;
+
+        form.render();
+
+        let MODULE_PATH = "/UserController";
+
+        $("#Avatar").attr("src", parent.layui.$(".layui-nav-img").attr("src"));
+
+        window.callback = function (data) {
+            layer.close(data.index);
+            $("#userAvatar").attr("src", data.newAvatar);
+            parent.layui.$(".layui-nav-img").attr("src", data.newAvatar);
+        }
+
+        $("#userAvatar").click(function () {
+            layer.open({
+                type: 2,
+                title: '更换图片',
+                shade: 0.1,
+                area: ["900px", "500px"],
+                content: MODULE_PATH + '/user/uploadProfile',
+                btn: ['确定', '取消'],
+                yes: function (index, layero) {
+                    window['layui-layer-iframe' + index].submitForm();
+                }
+            });
+        });
+
+        //基本信息提交
+        form.on('submit(userInfoSubmit)', function (data) {
+            $.ajax({
+                url: MODULE_PATH +'/user/update',
+                data: data.field,
+                dataType: 'json',
+                type: 'post',
+                async:false,
+                success: function (result) {
+                    if (result.code == 200) {
+                        layer.msg(result.msg, {icon: 1, time: 1000}, function () {
+                            $("#username").html(data.field.username);
+                            $("#nickname").html(data.field.nickname);
+                            $("#phonenumber").html(data.field.phonenumber);
+                            $("#email").html(data.field.email);
+                            parent.layui.$("#nickname").text(data.field.nickname);
+                        });
+                    } else {
+                        layer.msg(result.msg, {icon: 2, time: 1000});
+                    }
+                }
+            });
+        });
+
+        //更新密码
+        form.on('submit(userPasswdSubmit)', function (data) {
+            $.ajax({
+                url: MODULE_PATH +'/user/resetPwd',
+                data: data.field,
+                dataType: 'json',
+                type: 'post',
+                async:false,
+                success: function (result) {
+                    if (result.code == 200) {
+                        layer.msg(result.msg, {icon: 1, time: 1000}, function () {
+                        });
+                    } else {
+                        layer.msg(result.msg, {icon: 2, time: 1000});
+                    }
+                }
+            });
+        });
+
+        //关闭
+        $(".del").click(function(){
+            parent.layui.tab.delCurrentTabByElem('content',function(id){
+            });
+        })
+    });
+</script>
+</body>
+</html>

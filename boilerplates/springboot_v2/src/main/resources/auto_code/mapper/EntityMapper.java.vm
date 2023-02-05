@@ -1,0 +1,32 @@
+package ${parentPack}.mapper.auto;
+
+import ${parentPack}.model.auto.${tableInfo.javaTableName};
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+import java.util.List;
+
+/**
+ * ${tableInfo.tableComment}Mapper接口
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+public interface ${tableInfo.javaTableName}Mapper extends BaseMapper<${tableInfo.javaTableName}>
+{
+    #set( $pklag = false)
+    #set( $pk_javaType = '')
+    #foreach ($column in $beanColumns)
+        #if(${column.column_key} == 'PRI')
+            #set( $pklag = true )
+            #set( $pk_javaType=$column.javaType)
+        #end
+    #end
+
+    /**
+     * 查询${tableInfo.tableComment}列表
+     *
+     * @param ${tableInfo.javaTableName_a}
+     * @return ${tableInfo.javaTableName}集合
+     */
+    public List<${tableInfo.javaTableName}> select${tableInfo.javaTableName}List(${tableInfo.javaTableName} ${tableInfo.javaTableName_a});
+}

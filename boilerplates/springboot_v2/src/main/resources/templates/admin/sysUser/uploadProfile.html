@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('头像上传')"/>
+</head>
+<body class="pear-container">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-xs9">
+            <div style="height:325px;background-color: rgb(247, 247, 247);">
+                <img id="sourceImage" src="">
+            </div>
+        </div>
+        <div class="layui-col-xs3" style="padding-left:0px;">
+            <div id="previewImage" style="width:210px;height:210px;border: 1px solid rgb(200, 200, 200);border-radius: 50%;overflow:hidden;">
+            </div>
+        </div>
+    </div>
+    <div class="layui-row">
+        <div class="layui-form-item">
+            <div class="layui-input-inline layui-btn-container" style="width: auto;vertical-align:top;">
+                <button class="pear-btn pear-btn-sm pear-btn-primary layui-icon layui-icon-left" cropper-event="rotate" data-option="-15" title="左旋15°"></button>
+                <button class="pear-btn pear-btn-sm pear-btn-primary layui-icon layui-icon-right" cropper-event="rotate" data-option="15" title="右旋15°"></button>
+                <button class="pear-btn pear-btn-sm pear-btn-danger layui-icon layui-icon-refresh" cropper-event="reset" title="重置"></button>
+                <label for="uploadPicture" class="pear-btn pear-btn-sm pear-btn-primary layui-icon layui-icon-upload" title="选择图片"></label>
+                <input class="layui-upload-file" id="uploadPicture" type="file" value="选择图片">
+            </div>
+            <div class="layui-form-mid layui-word-aux">建议:图片的尺寸宽高比为1:1,大小在5m以内。</div>
+        </div>
+    </div>
+    <th:block th:include="include :: footer"/>
+    <script>
+        layui.use(['layer','cropper'], function () {
+            let $ = layui.jquery;
+            let cropper = layui.cropper;
+
+            let MODULE_PATH = "/UserController";
+
+            var options = {
+                aspectRatio: 1 / 1, // 裁剪框比例
+                preview: '#previewImage', // 预览div
+                viewmode: 1
+            };
+            
+            var obj = parent.layui.$("#Avatar").attr("src");
+            $("#sourceImage").attr("src", obj);
+            console.log(parent.layui.$("#Avatar").attr("src"));
+            $("#sourceImage").cropper(options);
+
+            window.submitForm = function () {
+                $("#sourceImage").crossOrigin = 'anonymous';//解决跨域图片问题
+                $("#sourceImage").cropper("getCroppedCanvas", {
+                    width: 280,
+                    height: 140
+                }).toBlob(function (blob) {
+                    var timeStamp = Date.parse(new Date());
+                    var fileName = timeStamp + '.jpg';
+                    var formData = new FormData();
+                    formData.append('file', blob, fileName);
+                    formData.append('fileName', fileName);
+                    formData.append('fileToken', timeStamp);
+                    
+					$.ajax({
+                        method: "post",
+                        //用于文件上传的服务器端请求地址
+                        url: MODULE_PATH + "/user/updateAvatar",
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (result) {
+                            if (result.code == 200) {
+                                layer.msg(result.msg, {icon: 1, time: 1000}, function () {
+                                    parent.layui.$("#Avatar").attr("src", result.data);
+                                    var reader = new FileReader();
+                                    reader.readAsDataURL(blob);
+                                    reader.onload = function (e) {
+                                        var data = {
+                                            index:parent.layer.getFrameIndex(window.name),
+                                            newAvatar : e.target.result
+                                        };
+                                        parent.window.callback(data);
+                                    };
+                                });
+                            } else {
+                                layer.msg(result.msg, {icon: 2, time: 1000});
+                            }
+                        },
+                        error: function (result) {
+                            layer.msg(result.msg, {icon: 2, time: 1000});
+                        }
+                    });
+                });
+            }
+
+            $(".pear-btn").on('click', function () {
+                var event = $(this).attr("cropper-event");
+
+                if (event === 'rotate') {
+                    var option = $(this).attr('data-option');
+                    $("#sourceImage").cropper('rotate', option);
+                } else if (event === 'reset') {
+                    $("#sourceImage").cropper('reset');
+                }
+
+                $("#uploadPicture").change(function () {
+                    var r = new FileReader();
+                    var f = this.files[0];
+
+                    var uploadFileSize = f.size / 1024;
+                    if (uploadFileSize > 5120) {
+                        parent.layer.msg("上传文件不得超过5m", { icon: 5 });
+                        return false;
+                    }
+
+                    r.readAsDataURL(f);
+                    r.onload = function (e) {
+                        $("#sourceImage")
+                            .cropper('destroy')
+                            .attr('src', this.result)
+                            .cropper(options);
+                    };
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,91 @@
+package ${parentPack}.service;
+
+import ${parentPack}.model.auto.${tableInfo.javaTableName};
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
+
+/**
+ * ${tableInfo.tableComment}Service接口
+ *
+ * @author ${author}
+ * @date ${datetime}
+*/
+public interface I${tableInfo.javaTableName}Service extends IService<${tableInfo.javaTableName}>{
+	#set( $pklag = false)
+	#set( $pkfield = '' )
+	#set( $pk_column_name = '' )
+	#set( $pk_attrType = '')
+	#foreach ($column in $beanColumns)
+		#if(${column.column_key} == 'PRI')
+			#set( $pklag = true )
+			#set( $pkfield = $column.javaName )
+			#set( $pk_column_name=$column.column_name)
+			#set( $pk_attrType=$column.javaType)
+		#end
+	#end
+
+	/**
+	 * 查询${tableInfo.tableComment}
+	 *
+	 * @param id
+	 * @return ${tableInfo.javaTableName}
+	 */
+	public ${tableInfo.javaTableName} select${tableInfo.javaTableName}ById(${pk_attrType} id);
+
+	/**
+	 * 查询${tableInfo.tableComment}列表
+	 *
+	 * @param queryWrapper
+	 * @return ${tableInfo.javaTableName}集合
+	 */
+	public List<${tableInfo.javaTableName}> select${tableInfo.javaTableName}List(Wrapper<${tableInfo.javaTableName}> queryWrapper);
+
+	/**
+	 * 查询${tableInfo.tableComment}列表
+	 *
+	 * @param ${tableInfo.javaTableName_a}
+	 * @return ${tableInfo.javaTableName}集合
+	 */
+	public List<${tableInfo.javaTableName}> select${tableInfo.javaTableName}List(${tableInfo.javaTableName} ${tableInfo.javaTableName_a});
+
+	/**
+	 * 新增${tableInfo.tableComment}
+	 *
+	 * @param ${tableInfo.javaTableName_a}
+	 * @return 结果
+	 */
+	public int insert${tableInfo.javaTableName}(${tableInfo.javaTableName} ${tableInfo.javaTableName_a});
+
+	/**
+	 * 修改${tableInfo.tableComment}
+	 *
+	 * @param ${tableInfo.javaTableName_a}
+	 * @return 结果
+	 */
+	public int update${tableInfo.javaTableName}(${tableInfo.javaTableName}  ${tableInfo.javaTableName_a});
+
+	/**
+	 * 批量删除${tableInfo.tableComment}
+	 *
+	 * @param ids 需要删除的数据ID
+	 * @return 结果
+	 */
+	public int delete${tableInfo.javaTableName}ByIds(String ids);
+
+	/**
+	 * 删除${tableInfo.tableComment}信息
+	 *
+	 * @param id
+	 * @return 结果
+	 */
+	public int delete${tableInfo.javaTableName}ById(${pk_attrType} id);
+
+	/**
+	 * 修改权限状态展示或者不展示
+	 * @param ${tableInfo.javaTableName_a}
+	 * @return
+	 */
+	public int updateVisible(${tableInfo.javaTableName} ${tableInfo.javaTableName_a});
+}

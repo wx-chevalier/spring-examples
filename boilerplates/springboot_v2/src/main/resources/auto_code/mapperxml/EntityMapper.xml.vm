@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${parentPack}.mapper.auto.${tableInfo.javaTableName}Mapper">
+  <resultMap id="BaseResultMap" type="${parentPack}.model.auto.${tableInfo.javaTableName}">
+#foreach($column in $beanColumns)
+    <result column="${column.column_name}" jdbcType="${column.jdbcType}" property="${column.beanName}" />
+#end
+  </resultMap>
+
+  <sql id="select${tableInfo.javaTableName}Vo">
+        select#foreach($column in $beanColumns) $column.column_name#if($velocityCount != $columns.size()),#end#end from ${tableInfo.tableName}
+   </sql>
+
+  <select id="select${tableInfo.javaTableName}List" parameterType="${parentPack}.model.auto.${tableInfo.javaTableName}" resultMap="BaseResultMap">
+    <include refid="select${tableInfo.javaTableName}Vo"/>
+    <where>
+#foreach($column in $beanColumns)
+#if(!$tableInfo.isSuperColumn($column.beanName))
+#set($columnName=$column.column_name)
+#set($javaField=$column.beanName)
+#set($javaType=$column.beanType)
+        <if test="$javaField != null #if($javaType == 'java.lang.String' ) and $javaField.trim() != ''#end"> and $columnName = #{$javaField}</if>
+#end
+#end
+    </where>
+  </select>
+</mapper>

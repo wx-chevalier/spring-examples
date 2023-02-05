@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.v2.mapper.auto.TSysUserMapper">
+
+    <resultMap type="com.fc.v2.model.auto.TSysUser" id="TSysUserResult">
+        <result property="id"    column="id"    />
+        <result property="username"    column="username"    />
+        <result property="password"    column="password"    />
+        <result property="nickname"    column="nickname"    />
+        <result property="userType"    column="user_type"   />
+        <result property="email"       column="email"       />
+        <result property="phonenumber" column="phonenumber" />
+        <result property="sex"         column="sex"         />
+        <result property="avatar"      column="avatar"      />
+        <result property="depId"    column="dep_id"    />
+        <result property="posId"    column="pos_id"    />
+        <result property="depName"  column="dep_name"  />
+        <result property="posName" column="pos_name"   />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTSysUserVo">
+        select user.id, user.username, user.password, user.nickname, user.user_type, user.email, user.avatar, user.phonenumber, 
+            user.sex, user.dep_id, user.pos_id, user.create_by, user.create_time, user.update_by, user.update_time, user.remark,
+            dept.dept_name "dep_name", post.post_name "pos_name" from t_sys_user user, t_sys_department dept, t_sys_position post
+    </sql>
+
+    <select id="selectTSysUserById" resultMap="TSysUserResult" parameterType="Long">
+        <include refid="selectTSysUserVo"/>
+        <where>
+        	user.dep_id = dept.id and user.pos_id = post.id and user.id = #{id}
+        </where>
+    </select>
+
+    <select id="selectTSysUserList" resultMap="TSysUserResult" parameterType="com.fc.v2.model.auto.TSysUser">
+        <include refid="selectTSysUserVo"/>
+        <where>
+        	user.dep_id = dept.id and user.pos_id = post.id
+            <if test="username != null  and username != ''"> and user.username = #{username}</if>
+            <if test="nickname != null  and nickname != ''"> and user.nickname like concat('%', #{nickname}, '%')</if>
+            <if test="userType != null  and userType != ''"> and user.user_type = #{userType}</if>
+            <if test="email != null  and email != ''"> and user.email = #{email}</if>
+            <if test="phonenumber != null  and phonenumber != ''"> and user.phonenumber = #{phonenumber}</if>
+            <if test="sex != null  and sex != ''"> and user.sex = #{sex}</if>
+            <if test="avatar != null  and avatar != ''"> and user.avatar = #{avatar}</if>
+            <if test="depId != null "> and user.dep_id = #{depId}</if>
+            <if test="posId != null "> and user.pos_id = #{posId}</if>
+        </where>
+        order by user.id+0 DESC
+    </select>
+    
+	<select id="selectTSysUserByDepIdList" resultMap="TSysUserResult" parameterType="String">
+        <include refid="selectTSysUserVo"/>
+        <where>
+			user.dep_id = dept.id and user.pos_id = post.id and user.dep_id in
+			<foreach collection="array" item="depId" open="(" separator="," close=")">
+            	#{depId}
+        	</foreach>
+        </where> 
+        order by user.id+0 DESC
+    </select>
+</mapper>

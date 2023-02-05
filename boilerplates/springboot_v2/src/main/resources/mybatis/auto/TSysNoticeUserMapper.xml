@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.v2.mapper.auto.TSysNoticeUserMapper">
+    
+    <resultMap type="com.fc.v2.model.auto.TSysNoticeUser" id="TSysNoticeUserResult">
+        <result property="id"    column="id"    />
+        <result property="noticeId"    column="notice_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="state"    column="state"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTSysNoticeUserVo">
+        select id, notice_id, user_id, state, create_by, create_time, update_by, update_time, remark from t_sys_notice_user
+    </sql>
+</mapper>

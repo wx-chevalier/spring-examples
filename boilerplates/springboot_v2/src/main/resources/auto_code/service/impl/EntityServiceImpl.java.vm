@@ -1,0 +1,136 @@
+package ${parentPack}.service.impl;
+
+import java.util.List;
+import java.util.Arrays;
+import java.util.Map;
+
+import com.fc.v2.service.I${tableInfo.javaTableName}Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import ${parentPack}.common.support.ConvertUtil;
+import ${parentPack}.mapper.auto.${tableInfo.javaTableName}Mapper;
+import ${parentPack}.model.auto.${tableInfo.javaTableName};
+import cn.hutool.core.bean.BeanUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
+/**
+ * ${tableInfo.tableComment}Service业务层处理
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Service
+public class ${tableInfo.javaTableName}ServiceImpl extends ServiceImpl<${tableInfo.javaTableName}Mapper, ${tableInfo.javaTableName}> implements I${tableInfo.javaTableName}Service {
+
+    private static final Logger logger = LoggerFactory.getLogger(${tableInfo.javaTableName}ServiceImpl.class);
+
+    @Autowired
+    private ${tableInfo.javaTableName}Mapper ${tableInfo.javaTableName_a}Mapper;
+    #set( $pklag = false)
+    #set( $pkfield = '' )
+    #set( $pk_column_name = '' )
+    #set( $pk_attrType = '')
+    #foreach ($column in $beanColumns)
+        #if(${column.column_key} == 'PRI')
+            #set( $pklag = true )
+            #set( $pkfield = $column.javaName )
+            #set( $pk_column_name=$column.column_name)
+            #set( $pk_attrType=$column.javaType)
+        #end
+    #end
+    /**
+     * 查询${tableInfo.tableComment}
+     *
+     * @param id
+     * @return ${tableInfo.javaTableName}
+     */
+    @Override
+    public ${tableInfo.javaTableName} select${tableInfo.javaTableName}ById(${pk_attrType} id) {
+        return this.baseMapper.selectById(id);
+    }
+
+    /**
+     * 查询${tableInfo.tableComment}列表
+     *
+     * @param queryWrapper
+     * @return ${tableInfo.javaTableName}集合
+     */
+    @Override
+    public List<${tableInfo.javaTableName}> select${tableInfo.javaTableName}List(Wrapper<${tableInfo.javaTableName}> queryWrapper) {
+        return this.baseMapper.selectList(queryWrapper);
+    }
+
+    /**
+     * 查询${tableInfo.tableComment}列表
+     *
+     * @param ${tableInfo.javaTableName_a}
+     * @return ${tableInfo.javaTableName}集合
+     */
+    @Override
+    public List<${tableInfo.javaTableName}> select${tableInfo.javaTableName}List(${tableInfo.javaTableName} ${tableInfo.javaTableName_a}) {
+		Map<String, Object> map = BeanUtil.beanToMap(${tableInfo.javaTableName_a}, true, true);
+		QueryWrapper<${tableInfo.javaTableName}> queryWrapper = new QueryWrapper<${tableInfo.javaTableName}>();
+		queryWrapper.allEq(map,false);
+		return this.baseMapper.selectList(queryWrapper);
+    }
+
+    /**
+     * 新增${tableInfo.tableComment}
+     *
+     * @param ${tableInfo.javaTableName_a}
+     * @return 结果
+     */
+    @Override
+    public int insert${tableInfo.javaTableName}(${tableInfo.javaTableName} ${tableInfo.javaTableName_a}) {
+        return this.baseMapper.insert(${tableInfo.javaTableName_a});
+    }
+
+    /**
+     * 修改${tableInfo.tableComment}
+     *
+     * @param ${tableInfo.javaTableName_a}
+     * @return 结果
+     */
+    @Override
+    public int update${tableInfo.javaTableName} (${tableInfo.javaTableName}  ${tableInfo.javaTableName_a}) {
+        return this.baseMapper.updateById(${tableInfo.javaTableName_a});
+    }
+
+    /**
+     * 批量删除${tableInfo.tableComment}
+     *
+     * @param ids 需要删除的数据ID
+     * @return 结果
+     */
+    @Override
+    public int delete${tableInfo.javaTableName}ByIds(String ids) {
+        return this.baseMapper.deleteBatchIds(Arrays.asList(ConvertUtil.toStrArray(ids)));
+    }
+
+    /**
+     * 删除${tableInfo.tableComment}信息
+     *
+     * @param id
+     * @return 结果
+     */
+    @Override
+    public int delete${tableInfo.javaTableName}ById(${pk_attrType} id) {
+        return this.baseMapper.deleteById(id);
+    }
+
+    /**
+     * 修改权限状态展示或者不展示
+     *
+     * @param ${tableInfo.javaTableName_a}
+     * @return
+     */
+    @Override
+    public int updateVisible(${tableInfo.javaTableName} ${tableInfo.javaTableName_a}) {
+        return this.baseMapper.updateById(${tableInfo.javaTableName_a});
+    }
+}

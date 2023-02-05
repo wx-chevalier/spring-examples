@@ -1,0 +1,112 @@
+package ${parentPack}.model.auto;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fc.v2.common.base.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import com.baomidou.mybatisplus.annotation.*;
+
+
+/**
+ * ${tableInfo.tableComment}对象 ${tableInfo.tableName}
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@TableName("${tableInfo.tableName}")
+public class ${tableInfo.javaTableName} extends BaseEntity {
+
+	private static final long serialVersionUID = 1L;
+#set($isdate = false)
+#foreach ($column in $beanColumns)
+#if(!$tableInfo.isSuperColumn($column.beanName))
+#if(${column.beanType} == "java.util.Date")
+	#set($isdate =true)
+	/** ${column.column_comment} */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+	@ApiModelProperty(value = "$column.column_comment")
+	private ${column.javaType} ${column.beanName};
+#else
+
+	/** ${column.column_comment} */
+#if(${column.column_key} == "PRI")
+	@TableId(type = IdType.ASSIGN_ID)
+	@JsonSerialize(using = ToStringSerializer.class)
+#end
+	@ApiModelProperty(value = "$column.column_comment")
+	private ${column.javaType} ${column.beanName};
+#end
+#end
+#end
+	
+#foreach ($column in $beanColumns)
+#if(!$tableInfo.isSuperColumn($column.beanName))
+#if($column.beanType == "java.util.String")
+	@JsonProperty("${column.beanName}")
+	public ${column.javaType} get${column.javaName}() {
+		return ${column.beanName};
+	}
+
+	public void set${column.javaName}(${column.javaType} ${column.beanName}) {
+		this.${column.beanName} = ${column.beanName} == null ? null : ${column.beanName}.trim();
+	}
+#else
+	@JsonProperty("${column.beanName}")
+	public ${column.javaType} get${column.javaName}() {
+		return ${column.beanName};
+	}
+
+	public void set${column.javaName}(${column.javaType} ${column.beanName}) {
+		this.${column.beanName} =  ${column.beanName};
+	}
+#end
+#end
+#end
+
+#set( $lag = 0)
+#set( $lagstr="")
+#foreach ($column in $beanColumns)
+#if(!$tableInfo.isSuperColumn($column.beanName))
+	#if(($lag+1)>=(${beanColumns.size()}))
+	 #set($lagstr = $lagstr+"${column.javaType} ${column.beanName}")
+	#else
+	 #set($lagstr = $lagstr+"${column.javaType} ${column.beanName},")
+	#end
+	#set( $lag  = $lag + 1 )
+#end
+#end
+
+	public ${tableInfo.javaTableName}(${lagstr}) {
+#foreach ($column in $beanColumns)
+#if(!$tableInfo.isSuperColumn($column.beanName))
+		this.${column.beanName} = ${column.beanName};
+#end
+#end
+	}
+
+	public ${tableInfo.javaTableName}() {
+	    super();
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
+#foreach ($column in $beanColumns)
+#set($AttrName=$column.javaName)
+			.append("${column.beanName}", get${AttrName}())
+#end
+		.toString();
+	}
+
+#if(($isdate)==true)
+	public String dateToStringConvert(Date date) {
+		if(date!=null) {
+			return DateUtil.format(date, "yyyy-MM-dd HH:mm:ss");
+		}
+		return "";
+	}
+#end
+}

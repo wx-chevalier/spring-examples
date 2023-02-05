@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fc.v2.mapper.auto.TSysOperLogMapper">
+    
+    <resultMap type="com.fc.v2.model.auto.TSysOperLog" id="TSysOperLogResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="method"    column="method"    />
+        <result property="operName"    column="oper_name"    />
+        <result property="operUrl"    column="oper_url"    />
+        <result property="operParam"    column="oper_param"    />
+        <result property="errorMsg"    column="error_msg"    />
+        <result property="operTime"    column="oper_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTSysOperLogVo">
+        select id, title, method, oper_name, oper_url, oper_param, error_msg, oper_time, create_by, create_time, update_by, update_time, remark from t_sys_oper_log
+    </sql>
+
+    <update id="cleanTSysOperLog">
+        truncate table t_sys_oper_log
+    </update>
+</mapper>

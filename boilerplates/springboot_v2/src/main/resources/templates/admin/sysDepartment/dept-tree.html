@@ -1,0 +1,62 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <th:block th:include="include :: header('部门列表')"/>
+</head>
+<body>
+<form class="layui-form" action="">
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="main-container">
+                <div class="layui-row layui-col-space15">
+                    <div class="layui-col-md2">
+                        <div class="layui-card">
+                            <div class="layui-card-body">
+                                <div id="organizationTreeContent" style="overflow: auto">
+                                    <ul id="organizationTree" class="dtree" data-id="0"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>      
+        </div>
+    </div>
+</form>
+<th:block th:include="include :: footer"/>
+<script>
+layui.use(['form','jquery','dtree'],function(){
+
+    let form = layui.form;
+    let $ = layui.jquery;
+    let dtree = layui.dtree;
+    
+    var DTree = dtree.render({
+		elem: "#organizationTree",
+		//data: data,
+		initLevel: "5", //默认展开层级为1
+		line: true, // 有线树
+		ficon: ["1", "-1"], // 设定一级图标样式。0表示方形加减图标，8表示小圆点图标
+		icon: ["0", "2"], // 设定二级图标样式。0表示文件夹图标，5表示叶子图标
+		method: 'get',
+        dataStyle: "layuiStyle",  //使用layui风格的数据格式
+        dataFormat: "list",  //配置data的风格为list
+        response:{message:"msg",statusCode:0, treeId: "id", parentId: "parentId", title: "deptName"},  //修改response中返回数据的定义
+		url: rootPath + "/SysDepartmentController/list",
+        menubar:true,
+        height: "full-150", // 设置高度，也可以直接固定数字
+        width: "80%"
+	});
+    
+    // 绑定节点点击事件
+    dtree.on("node(organizationTree)", function(obj) {
+        parent.layui.$("#depId").val(obj.param.nodeId);
+        parent.layui.$("#depName").val(obj.param.context);
+        //当你在iframe页面关闭自身时 先得到当前iframe层的索引
+        var index = parent.layer.getFrameIndex(window.name); 
+        //再执行关闭 
+        parent.layer.close(index); 
+    });
+})
+</script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-#  zlt-microservices-platform
+# zlt-microservices-platform
 
 <p align="center">
   <img src="https://img.shields.io/badge/Version-5.5.0-critical" alt="Downloads"/>
@@ -15,22 +15,25 @@
   </a>
 </p>
 
-
-
-
-
 ## 如果您觉得有帮助，请点右上角 "Star" 支持一下谢谢
+
 &nbsp;
+
 ## 1. 总体架构图
+
 ![mark](https://gitee.com/zlt2000/images/raw/master/springcloud%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg)
 
 &nbsp;
+
 ## 2. 功能介绍
+
 ![mark](https://gitee.com/zlt2000/images/raw/master/ZLT-MP%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%B9%B3%E5%8F%B0%E5%8A%9F%E8%83%BD%E5%9B%BE.jpg)
 
 &nbsp;
+
 ## 3. 项目介绍
-* **技术交流群** 
+
+- **技术交流群**
 <table>
     <tr>
         <td><center><strong><a href="https://qm.qq.com/cgi-bin/qm/qr?k=HntAHTirZwCEjF8PQpjDYkw37Zx5rJg8&jump_from=webapi" target="_blank">交流三群</a></strong></center></td>
@@ -40,29 +43,30 @@
     </tr>
 </table>
 
-
-* **详细在线文档** ：https://www.kancloud.cn/zlt2000/microservices-platform/919418
-  * **[项目更新日志](https://www.kancloud.cn/zlt2000/microservices-platform/936235)**
-  * **[文档更新日志](https://www.kancloud.cn/zlt2000/microservices-platform/936236)**
-* **演示环境地址**： [http://zlt2000.cn](http://zlt2000.cn/)
-  * 账号密码：admin/admin
-  * APM监控账号密码：admin/admin
-  * Grafana账号：zlt/zlt123
-  * 任务管理账号密码：admin/123456
-* **演示环境有全方位的监控示例：日志系统 + APM系统 + GPE系统**
-* Gitee地址：https://gitee.com/zlt2000/microservices-platform
-* Github地址：https://github.com/zlt2000/microservices-platform
-* 前后端分离的企业级微服务架构
-* 主要针对解决微服务和业务开发时常见的**非功能性需求**
-* 深度定制`Spring Security`真正实现了基于`RBAC`、`jwt`和`oauth2`的无状态统一权限认证的解决方案
-* 提供应用管理，方便第三方系统接入，**支持多租户(应用隔离)**
-* 引入组件化的思想实现高内聚低耦合并且高度可配置化
-* 注重代码规范，严格控制包依赖，每个工程基本都是最小依赖
-* 非常适合学习和企业中使用
->重构于开源项目OCP&cp：https://gitee.com/owenwangwen/open-capacity-platform
+- **详细在线文档** ：https://www.kancloud.cn/zlt2000/microservices-platform/919418
+  - **[项目更新日志](https://www.kancloud.cn/zlt2000/microservices-platform/936235)**
+  - **[文档更新日志](https://www.kancloud.cn/zlt2000/microservices-platform/936236)**
+- **演示环境地址**： [http://zlt2000.cn](http://zlt2000.cn/)
+  - 账号密码：admin/admin
+  - APM 监控账号密码：admin/admin
+  - Grafana 账号：zlt/zlt123
+  - 任务管理账号密码：admin/123456
+- **演示环境有全方位的监控示例：日志系统 + APM 系统 + GPE 系统**
+- Gitee 地址：https://gitee.com/zlt2000/microservices-platform
+- Github 地址：https://github.com/zlt2000/microservices-platform
+- 前后端分离的企业级微服务架构
+- 主要针对解决微服务和业务开发时常见的**非功能性需求**
+- 深度定制`Spring Security`真正实现了基于`RBAC`、`jwt`和`oauth2`的无状态统一权限认证的解决方案
+- 提供应用管理，方便第三方系统接入，**支持多租户(应用隔离)**
+- 引入组件化的思想实现高内聚低耦合并且高度可配置化
+- 注重代码规范，严格控制包依赖，每个工程基本都是最小依赖
+- 非常适合学习和企业中使用
+  > 重构于开源项目 OCP&cp：https://gitee.com/owenwangwen/open-capacity-platform
 
 &nbsp;
+
 ## 4. 模块说明
+
 ```lua
 central-platform -- 父项目，公共依赖
 │  ├─zlt-business -- 业务模块一级工程
@@ -112,21 +116,23 @@ central-platform -- 父项目，公共依赖
     </tr>
 </table>
 
-
 ## 5. 交流反馈
-* 有问题先看看 [F&Q](https://www.kancloud.cn/zlt2000/microservices-platform/981382) 中有没有相关的回答
-* 欢迎提交`ISSUS`，请写清楚问题的具体原因，重现步骤和环境(上下文)
-* 项目/微服务交流请进群：
-  * 一群：[250883130(已满)](https://shang.qq.com/wpa/qunwpa?idkey=17544199255998bda0d938fb72b08d076c40c52c9904520b76eb5eb0585da71e)
-  * 二群：[1041797659(已满)](https://shang.qq.com/wpa/qunwpa?idkey=41988facbc02f678942a7ee7ae03122f2ef0a10c948b3d07319f070bfb0d3a98)
-  * 三群：[512637767](https://qm.qq.com/cgi-bin/qm/qr?k=HntAHTirZwCEjF8PQpjDYkw37Zx5rJg8&jump_from=webapi)
-* 个人博客：[https://zlt2000.gitee.io](https://zlt2000.gitee.io)
-* 个人邮箱：zltdiablo@163.com
-* 个人公众号：[陶陶技术笔记](http://qiniu.zlt2000.cn/blog/20190902/M56cWjw7uNsc.png?imageslim)
-* GitChat：[https://gitbook.cn/gitchat/author/5b2362320398d50d7b7ab29e](https://gitbook.cn/gitchat/author/5b2362320398d50d7b7ab29e)
+
+- 有问题先看看 [F&Q](https://www.kancloud.cn/zlt2000/microservices-platform/981382) 中有没有相关的回答
+- 欢迎提交`ISSUS`，请写清楚问题的具体原因，重现步骤和环境(上下文)
+- 项目/微服务交流请进群：
+  - 一群：[250883130(已满)](https://shang.qq.com/wpa/qunwpa?idkey=17544199255998bda0d938fb72b08d076c40c52c9904520b76eb5eb0585da71e)
+  - 二群：[1041797659(已满)](https://shang.qq.com/wpa/qunwpa?idkey=41988facbc02f678942a7ee7ae03122f2ef0a10c948b3d07319f070bfb0d3a98)
+  - 三群：[512637767](https://qm.qq.com/cgi-bin/qm/qr?k=HntAHTirZwCEjF8PQpjDYkw37Zx5rJg8&jump_from=webapi)
+- 个人博客：[https://zlt2000.gitee.io](https://zlt2000.gitee.io)
+- 个人邮箱：zltdiablo@163.com
+- 个人公众号：[陶陶技术笔记](http://qiniu.zlt2000.cn/blog/20190902/M56cWjw7uNsc.png?imageslim)
+- GitChat：[https://gitbook.cn/gitchat/author/5b2362320398d50d7b7ab29e](https://gitbook.cn/gitchat/author/5b2362320398d50d7b7ab29e)
 
 &nbsp;
+
 ## 6. 截图（点击可大图预览）
+
 <table>
     <tr>
         <td><img alt="首页" src="https://gitee.com/zlt2000/images/raw/master/%E9%A6%96%E9%A1%B5.png"/></td>

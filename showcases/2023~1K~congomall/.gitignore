@@ -1,0 +1,42 @@
+HELP.md
+target/
+.hprof
+!.mvn/wrapper/maven-wrapper.jar
+dependency-reduced-pom.xml
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### dist ###
+congomall-framework-all/congomall-flow-monitor-agent/dist
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!congomall-front/build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+# maven plugin ignore
+*.gpg

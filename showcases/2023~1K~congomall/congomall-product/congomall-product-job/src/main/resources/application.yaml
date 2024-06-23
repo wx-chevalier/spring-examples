@@ -1,0 +1,128 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+server:
+  port: 9001
+
+spring:
+  application:
+    name: product-service-job
+  cloud:
+    sentinel:
+      transport:
+        dashboard: localhost:8686
+        port: 8719
+  shardingsphere:
+    datasource:
+      ds-0:
+        driver-class-name: com.mysql.jdbc.Driver
+        type: com.zaxxer.hikari.HikariDataSource
+        username: root
+        password: root
+        jdbc-url: jdbc:mysql://127.0.0.1:3306/congomall_product?characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=GMT%2B8
+      names: ds-0
+    props:
+      sql-show: true
+    rules:
+      sharding:
+        sharding-algorithms:
+          product_sharding_by_mod_algorithm:
+            props:
+              algorithmClassName: org.opengoofy.congomall.biz.product.infrastructure.algorithm.ProductSnowflakeServiceShardingAlgorithm
+              sharding-count: 16
+              strategy: complex
+            type: CLASS_BASED
+          product-sku_sharding_by_mod_algorithm:
+            props:
+              algorithmClassName: org.opengoofy.congomall.biz.product.infrastructure.algorithm.ProductSkuSnowflakeServiceShardingAlgorithm
+              sharding-count: 16
+              strategy: complex
+            type: CLASS_BASED
+        tables:
+          product_spu:
+            actual-data-nodes: ds-0.product_spu_$->{0..15}
+            table-strategy:
+              complex:
+                sharding-algorithm-name: product_sharding_by_mod_algorithm
+                sharding-columns: brand_id,id
+          product_sku:
+            actual-data-nodes: ds-0.product_sku_$->{0..15}
+            table-strategy:
+              complex:
+                sharding-algorithm-name: product-sku_sharding_by_mod_algorithm
+                sharding-columns: brand_id,product_id
+  redis:
+    host: localhost
+    port: 6379
+    password: 123456
+
+  dynamic:
+    thread-pool:
+      default-executor:
+        active-alarm: 80
+        alarm: false
+        allow-core-thread-time-out: true
+        blocking-queue: ResizableCapacityLinkedBlockingQueue
+        capacity-alarm: 80
+        core-pool-size: 20
+        execute-time-out: 100
+        keep-alive-time: 9999
+        maximum-pool-size: 40
+        queue-capacity: 4096
+        rejected-handler: AbortPolicy
+
+congomall:
+  fastjson:
+    safa-mode: true
+  swagger:
+    contact:
+      name: chen.ma
+    description: Product Service Job
+    title: Product Service Job
+    version: 1.0.0
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-field: delFlag
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  mapper-locations: classpath:mapper/*.xml
+
+seata:
+  application-id: ${spring.application.name}
+  enable-auto-data-source-proxy: false
+  service:
+    grouplist:
+      seata-server: 127.0.0.1:8091
+    vgroup-mapping:
+      my-tx-group: seata-server
+  tx-service-group: my-tx-group
+  use-jdk-proxy: true
+
+xxl-job:
+  accessToken: default_token
+  admin:
+    addresses: http://localhost:8080/xxl-job-admin
+  executor:
+    appname: xxl-job-executor-sample
+    ip: 192.168.1.5
+    logpath: /Users/single/data/xxljob
+    logretentiondays: 30
+    port: 19999

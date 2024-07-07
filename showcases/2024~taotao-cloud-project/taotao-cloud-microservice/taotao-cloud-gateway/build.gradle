@@ -1,0 +1,173 @@
+dependencies {
+    implementation "io.github.shuigedeng:taotao-cloud-starter-core"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-monitor"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-captcha"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-logger"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-captcha"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-useragent"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-idgenerator"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-lock"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-prometheus"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-actuator"
+
+    implementation "io.github.shuigedeng:taotao-cloud-starter-security-springsecurity"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-micrometer"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-skywalking"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-facility-alibaba"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-cache-caffeine"
+
+    //implementation 'com.tencent.cloud:spring-cloud-tencent-gateway-plugin'
+    //implementation 'com.tencent.cloud:spring-cloud-tencent-featureenv-plugin'
+
+    implementation "com.alibaba.csp:sentinel-datasource-nacos"
+    implementation "com.alibaba.cloud:spring-cloud-alibaba-sentinel-gateway"
+    implementation("com.alibaba.cloud:spring-cloud-starter-alibaba-sentinel") {
+        exclude group: "com.fasterxml.jackson.dataformat", module: "jackson-dataformat-xml"
+    }
+
+    implementation 'org.apache.skywalking:apm-spring-cloud-gateway-3.x-plugin'
+
+    //支持mvc
+    //implementation "org.springframework.cloud:spring-cloud-starter-gateway-mvc"
+    implementation("org.springframework.cloud:spring-cloud-starter-gateway") {
+        exclude group: "org.springframework.boot", module: "spring-boot-starter-web"
+        exclude group: "org.springframework.boot", module: "spring-boot-starter-webflux"
+    }
+    implementation "org.springframework.boot:spring-boot-starter-webflux"
+    implementation "org.springframework.cloud:spring-cloud-starter-loadbalancer"
+    implementation 'org.springframework.cloud:spring-cloud-starter-function-webflux'
+
+    implementation "org.springframework.cloud:spring-cloud-starter-circuitbreaker-reactor-resilience4j"
+    implementation "io.github.resilience4j:resilience4j-ratelimiter:2.2.0"
+
+    implementation 'org.springdoc:springdoc-openapi-starter-webflux-api'
+    implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui'
+
+    implementation "com.github.xiaoymin:knife4j-openapi3-webflux-jakarta-spring-boot-starter"
+    implementation "com.github.xiaoymin:knife4j-openapi3-webflux-spring-boot-starter"
+    implementation "com.github.xiaoymin:knife4j-gateway-spring-boot-starter:4.5.0"
+
+    implementation "org.apache.commons:commons-pool2"
+    implementation "org.apache.commons:commons-lang3"
+    implementation "commons-fileupload:commons-fileupload:1.5"
+    implementation "commons-io:commons-io:2.16.1"
+
+    implementation "org.webjars:webjars-locator-core:0.58"
+
+    //网关限流 https://search.maven.org/artifact/com.eeeffff.limiter/ip-limiter-core-spring-gateway
+    //implementation "com.eeeffff.limiter:ip-limiter-core-spring-gateway:1.1.3"
+
+    //implementation("io.github.shuigedeng:taotao-cloud-starter-security-satoken") {
+    //    exclude group: "cn.dev33", module: "sa-token-spring-boot3-starter"
+    //    exclude group: "cn.dev33", module: "sa-token-jakarta-servlet"
+    //}
+    ////https://search.maven.org/artifact/cn.dev33/sa-token-reactor-spring-boot-starter
+    //implementation 'cn.dev33:sa-token-reactor-spring-boot3-starter:1.38.0'
+}
+
+configurations {
+    all {
+        //resolutionStrategy {
+        //    force 'net.minidev:json-smart:2.5.1'
+        //}
+
+        exclude group: "org.springframework", module: "spring-webmvc"
+        exclude group: "org.springframework.boot", module: "spring-boot-starter-data-jpa"
+        exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
+        exclude group: "com.alibaba.csp", module: "sentinel-spring-webmvc-adapter"
+        exclude group: "com.querydsl", module: "querydsl-apt"
+        exclude group: "commons-logging", module: "commons-logging"
+    }
+}
+
+mainClassName = "com.taotao.cloud.gateway.TaoTaoCloudGatewayApplication"
+description = "网关中心"
+archivesBaseName = 'taotao-cloud-gateway'
+
+
+//apache-shenyu网关中心配置
+//dependencies {
+//    implementation "io.github.shuigedeng:taotao-cloud-starter-core"
+//    implementation "io.github.shuigedeng:taotao-cloud-starter-monitor"
+//    implementation "io.github.shuigedeng:taotao-cloud-starter-captcha"
+//    implementation "io.github.shuigedeng:taotao-cloud-starter-logger"
+//
+//    api "org.springframework.boot:spring-boot-starter-webflux"
+//    api "org.springframework.boot:spring-boot-starter-actuator"
+//
+//    //https://search.maven.org/artifact/org.apache.shenyu/shenyu-spring-boot-starter-gateway
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-gateway:2.6.0"
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-instance:2.6.0"
+//
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-param-mapping:2.6.0"
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-waf:2.6.0"
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-ratelimiter:2.6.0"
+//    //api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-hystrix:2.6.0"
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-resilience4j:2.6.0"
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-sentinel:2.6.0"
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-redirect:2.6.0"
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-rewrite:2.6.0"
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-request:2.6.0"
+//    //api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-logging:2.6.0"
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-sign:2.6.0"
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-oauth2:2.6.0"
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-jwt:2.6.0"
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-modify-response:2.6.0"
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-cryptor:2.6.0"
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-general-context:2.6.0"
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-websocket:2.6.0"
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-metrics:2.6.0"
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-cache:2.6.0"
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-grpc:2.6.0"
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-springcloud:2.6.0"
+//    //api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-mock:2.6.0"
+//
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-apache-dubbo:2.6.0"
+//    api "org.apache.dubbo:dubbo:3.2.0"
+//
+//    //api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-tars:2.6.0"
+//    //api "com.tencent.tars:tars-client:1.7.2"
+//
+//    //api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-sofa:2.6.0"
+//    //api("com.alipay.sofa:sofa-rpc-all:5.7.6") {
+//    //    exclude group: "net.jcip", module: "jcip-annotations"
+//    //}
+//
+//    api "org.springframework.cloud:spring-cloud-commons"
+//    api("com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery") {
+//        exclude group: "org.springframework.cloud", module: "spring-cloud-loadbalancer"
+//    }
+//    //api("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:${eureka - client.version}") {
+//    //    exclude group: "org.springframework.cloud", module: "spring-cloud-starter-loadbalancer"
+//    //}
+//
+//    //api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-motan:2.6.0"
+//    //api "com.weibo:motan-core:${motan.version}"
+//    //api "com.weibo:motan-transport-netty4:${motan.version}"
+//    //api("com.weibo:motan-registry-zookeeper:${motan.version}") {
+//    //    exclude group: "log4j", module: "log4j"
+//    //    exclude group: "org.slf4j", module: "slf4j-log4j12"
+//    //}
+//    //api "com.weibo:motan-springsupport:${motan.version}"
+//
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-logging-rocketmq:2.6.0"
+//    //api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-logging-kafka:2.6.0"
+//    //api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-logging-elasticsearch:2.6.0"
+//    //api "org.apache.shenyu:shenyu-spring-boot-starter-plugin-logging-aliyun-sls:2.6.0"
+//
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-sync-data-zookeeper:2.6.0"
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-sync-data-websocket:2.6.0"
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-sync-data-http:2.6.0"
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-sync-data-nacos:2.6.0"
+//    api "org.apache.shenyu:shenyu-spring-boot-starter-sync-data-consul:2.6.0"
+//    api("org.apache.shenyu:shenyu-spring-boot-starter-sync-data-etcd:2.6.0") {
+//        exclude group: "io.grpc", module: "grpc-grpclb"
+//        exclude group: "io.grpc", module: "grpc-netty"
+//    }
+//}
+//
+//mainClassName = "com.taotao.cloud.gateway.shenyu.TaoTaoCloudGatewayShenyuApplication"
+//description = "基于apache-shenyu网关中心"
+//archivesBaseName = 'taotao-cloud-gateway-shenyu'
+
+

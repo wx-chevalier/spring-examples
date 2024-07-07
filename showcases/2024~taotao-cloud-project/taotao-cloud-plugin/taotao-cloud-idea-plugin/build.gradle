@@ -1,0 +1,81 @@
+plugins {
+    id "java"
+    //https://plugins.gradle.org/plugin/org.jetbrains.intellij
+    //id("org.jetbrains.intellij") version "1.17.3"
+}
+
+apply plugin: "java"
+apply plugin: "org.jetbrains.intellij"
+
+dependencies {
+    //testImplementation "junit:junit:4.13.2"
+
+    implementation "org.dromara.hutool:hutool-all:6.0.0-M13"
+    implementation "com.google.zxing:core:3.5.3"
+    implementation "com.google.zxing:javase:3.5.3"
+}
+
+//version "3.2022.15"
+
+// 配置开发过程中运行的 IDEA 沙盒信息
+// https://github.com/JetBrains/gradle-intellij-plugin
+// https://juejin.cn/post/7249380394456596535#heading-35
+intellij {
+    // 插件名称
+    pluginName = "TaoTaoToolKit"
+    //沙箱目录位置，用于保存IDEA的设置，默认在build文件下面，防止clean，放在根目录下。
+    //sandboxDir = "${rootProject.rootDir}/idea-sandbox"
+
+    // IDEA 的版本
+    version = "2024.1"
+    // 这里 IU 是指付费版, 也可以选择 IC 对应社区版
+    type = "IU"
+
+    // 各种版本去这里找
+    // https://www.jetbrains.com/intellij-repository/releases
+    //Disables updating since-build attribute in plugin.xml
+    // 配合这个参数，屏蔽插件安装时报的错：Plugin is not compatible with the current version of the IDE
+    // updateSinceUntilBuild也可以在plugin.xml配置 <idea-version since-build="191.0"/>
+    // 其中191.0表示2019.1月发布的版本，0表示无限大的版本
+    updateSinceUntilBuild = false
+    downloadSources = true
+
+    // 用到的插件
+    // plugins.set(listOf())
+    plugins = ['com.intellij.java',
+               'com.intellij.database' ,
+               'com.intellij.spring' ,
+               'com.intellij.spring.boot' ,
+               'org.jetbrains.plugins.yaml' ,
+               'org.intellij.intelliLang']
+}
+
+patchPluginXml {
+    //changeNotes = """
+    //              TaoTaoToolKit-1.0.1
+    //              """
+
+    //<!-- 插件兼容IDEA的最大和最小 build 号，两个属性可以任选一个或者同时使用
+    //官网详细介绍：http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html-->
+    //<idea-version since-build="3000" until-build="3999"/>
+
+    // 设置插件兼容的版本
+
+    //最低支持的版本 当前插件的起止 IDE 版本支持
+    //版本参考：https://plugins.jetbrains.com/docs/intellij/build-number-ranges.html?from=jetbrains.org#intellij-platform-based-products-of-recent-ide-versions
+    sinceBuild.set("241")
+    //最高支持的版本，不能不设置，不设置是默认为 project.version
+    untilBuild.set("241.*")
+}
+
+// https://plugins.jetbrains.com/docs/intellij/plugin-signing.html
+//signPlugin {
+//    certificateChain.set(System.getenv("CERTIFICATE_CHAIN"))
+//    privateKey.set(System.getenv("PRIVATE_KEY"))
+//    password.set(System.getenv("PRIVATE_KEY_PASSWORD"))
+//}
+
+//https://plugins.jetbrains.com/author/me
+//https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html
+//https://plugins.jetbrains.com/plugin/20506-taotaocloudideaplugin
+publishPlugin { token.set(System.getenv("IEDA_PLUGIN_PUBLISH_TOKEN")) }

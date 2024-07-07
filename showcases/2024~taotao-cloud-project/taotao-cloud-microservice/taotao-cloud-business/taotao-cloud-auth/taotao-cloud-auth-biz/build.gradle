@@ -1,0 +1,143 @@
+dependencies {
+    implementation project(":taotao-cloud-microservice:taotao-cloud-business:taotao-cloud-auth:taotao-cloud-auth-api")
+    implementation project(":taotao-cloud-microservice:taotao-cloud-business:taotao-cloud-sys:taotao-cloud-sys-api")
+    implementation project(":taotao-cloud-microservice:taotao-cloud-business:taotao-cloud-member:taotao-cloud-member-api")
+    implementation project(":taotao-cloud-microservice:taotao-cloud-business:taotao-cloud-message:taotao-cloud-message-api")
+
+    implementation "io.github.shuigedeng:taotao-cloud-starter-core"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-logger"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-openfeign"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-springdoc"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-dubbo"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-captcha"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-idgenerator"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-lock"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-prometheus"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-actuator"
+
+    implementation "io.github.shuigedeng:taotao-cloud-starter-cache-redis"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-security-springsecurity"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-security-justauth"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-facility-alibaba"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-sentinel"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-data-p6spy"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-data-jpa"
+    implementation("io.github.shuigedeng:taotao-cloud-starter-data-mybatis") {
+        exclude group: "com.baomidou", module: "dynamic-datasource-spring-boot3-starter"
+    }
+    implementation "io.github.shuigedeng:taotao-cloud-starter-cache-redis"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-mq-kafka"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-micrometer"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-skywalking"
+
+    implementation 'org.springframework.session:spring-session-data-redis:3.3.1'
+
+    implementation 'com.github.binarywang:weixin-java-mp:4.6.2.B'
+    implementation 'com.github.binarywang:weixin-java-miniapp:4.6.2.B'
+
+    //implementation 'top.dcenter:justAuth-spring-security-starter:1.1.25'
+
+    //https://search.maven.org/artifact/org.webjars/jquery
+    implementation "org.webjars:jquery:3.7.1"
+    //https://search.maven.org/artifact/org.webjars/bootstrap
+    implementation "org.webjars:bootstrap:5.3.3"
+    //https://search.maven.org/artifact/org.webjars/webjars-locator-core
+    implementation "org.webjars:webjars-locator-core:0.58"
+    implementation 'org.webjars:font-awesome:6.5.1'
+    implementation 'org.webjars.bower:jquery-backstretch:2.1.17'
+    implementation 'org.webjars:uniform:2.1.2-1'
+    implementation 'org.webjars.npm:animate.css:4.1.1'
+    implementation "org.webjars.npm:mdi__font:7.4.47"
+    implementation 'org.webjars.npm:quasar:2.15.1'
+    implementation("org.webjars.npm:vue:3.4.21") {
+        exclude group: "org.webjars.npm", module: "babel__parser"
+    }
+    implementation 'org.webjars.npm:babel__parser:7.24.0'
+
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.2.RELEASE'
+    implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.3.0'
+
+    implementation("org.springframework.boot:spring-boot-starter-web") {
+        exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
+    }
+    implementation "org.springframework.boot:spring-boot-starter-undertow"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
+    implementation "org.springframework.boot:spring-boot-starter-validation"
+    implementation "org.springframework.boot:spring-boot-starter-jdbc"
+
+    implementation "org.springframework.boot:spring-boot-starter-security"
+    implementation 'org.springframework.security:spring-security-crypto'
+    implementation "org.springframework.security:spring-security-oauth2-jose"
+    implementation "org.springframework.boot:spring-boot-starter-oauth2-client"
+    implementation "org.springframework.boot:spring-boot-starter-oauth2-resource-server"
+    implementation "org.springframework.boot:spring-boot-starter-oauth2-authorization-server"
+
+    implementation "com.github.ulisesbocchio:jasypt-spring-boot-starter"
+
+    //https://search.maven.org/artifact/com.nimbusds/nimbus-jose-jwt
+    implementation "com.nimbusds:nimbus-jose-jwt:9.40"
+    //https://search.maven.org/artifact/com.nimbusds/oauth2-oidc-sdk
+    implementation 'com.nimbusds:oauth2-oidc-sdk:11.12'
+
+    implementation "org.apache.commons:commons-collections4"
+
+    implementation "org.springframework:spring-webflux"
+    implementation "io.projectreactor.netty:reactor-netty-http"
+    implementation "io.projectreactor.netty:reactor-netty"
+
+    //百度人脸识别以及登录
+    //https://search.maven.org/artifact/com.baidu.aip/java-sdk
+    implementation('com.baidu.aip:java-sdk:4.16.19') {
+        exclude group: "commons-logging", module: "commons-logging"
+        exclude group: "org.slf4j", module: "slf4j-simple"
+        exclude group: "org.slf4j", module: "slf4j-api"
+    }
+
+    // 阿里云app手机一键登录
+    //https://search.maven.org/artifact/com.aliyun/dypnsapi20170525
+    implementation 'com.aliyun:dypnsapi20170525:1.2.1'
+
+    annotationProcessor "com.querydsl:querydsl-apt:5.1.0:jakarta"
+    api "com.querydsl:querydsl-jpa:5.1.0:jakarta"
+    api "jakarta.persistence:jakarta.persistence-api:3.1.0"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api:3.1.0"
+}
+
+mainClassName = "com.taotao.cloud.auth.biz.TaoTaoCloudAuthApplication"
+description = "认证中心biz"
+archivesBaseName = 'taotao-cloud-auth'
+
+configurations {
+    all {
+        resolutionStrategy.cacheChangingModulesFor 0, "seconds"
+        resolutionStrategy.cacheDynamicVersionsFor 0, "seconds"
+
+        resolutionStrategy {
+            //force "org.codehaus.groovy:groovy:4.0.0"
+            //force 'org.antlr:antlr4:4.13.1'
+            force 'org.bouncycastle:bcprov-jdk18on:1.78.1'
+            force 'org.bouncycastle:bcpkix-jdk18on:1.78.1'
+            force 'org.bouncycastle:bcutil-jdk18on:1.78.1'
+            force 'org.webjars.npm:csstype:3.1.3'
+            force 'org.webjars.npm:postcss:8.4.38'
+            force 'org.webjars.npm:nanoid:4.0.2'
+            //force 'net.minidev:json-smart:2.5.1'
+
+        }
+
+        //exclude group: "log4j", module: "log4j"
+        //exclude group: "log4j", module: "slf4j-simple"
+        //exclude group: "org.slf4j", module: "slf4j-log4j12"
+        //exclude group: "org.apache.logging.log4j", module: "log4j-slf4j-impl"
+        //exclude group: "org.apache.logging.log4j", module: "log4j-to-slf4j"
+        //exclude group: "org.apache.logging.log4j", module: "log4j-api"
+        exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
+        exclude group: "commons-logging", module: "commons-logging"
+        exclude group: "org.bouncycastle", module: "bcprov-jdk15on"
+        exclude group: "org.bouncycastle", module: "bcpkix-jdk15on"
+        exclude group: "org.bouncycastle", module: "bcutil-jdk15on"
+        exclude group: "com.baomidou", module: "dynamic-datasource-spring-boot3-starter"
+    }
+}

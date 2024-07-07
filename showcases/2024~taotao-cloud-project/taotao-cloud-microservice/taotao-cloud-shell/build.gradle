@@ -1,0 +1,56 @@
+dependencies {
+
+    implementation "io.github.shuigedeng:taotao-cloud-starter-core"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-logger"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-dingtalk"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-idgenerator"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-lock"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-prometheus"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-actuator"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-monitor"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-metrics"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-micrometer"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-mail"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-skywalking"
+
+    implementation("org.springframework.boot:spring-boot-starter-web") {
+        exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
+    }
+    implementation "org.springframework.boot:spring-boot-starter-undertow"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude group: "org.junit.vintage", module: "junit-vintage-engine"
+    }
+
+    //https://central.sonatype.com/artifact/org.springframework.shell/spring-shell-starter
+    implementation 'org.springframework.shell:spring-shell-starter:3.3.1'
+
+    //，jcommander 是一个只有几十 kb 的 Java 命令行参数解析工具，可以通过注解的方式快速实现命令行参数解析。
+    //https://search.maven.org/artifact/com.beust/jcommander
+    implementation 'com.beust:jcommander:1.82'
+
+    //https://search.maven.org/artifact/com.github.whvcse/easy-captcha
+    implementation "com.github.whvcse:easy-captcha:1.6.2"
+    implementation "jakarta.servlet:jakarta.servlet-api"
+
+    implementation "org.eclipse.jgit:org.eclipse.jgit:6.9.0.202403050737-r"
+    implementation "org.eclipse.jgit:org.eclipse.jgit.archive:6.9.0.202403050737-r"
+
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
+
+    //implementation "com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery"
+    //implementation "com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-config"
+
+    implementation "org.dromara.hutool:hutool-all"
+    implementation "io.netty:netty-all"
+
+    annotationProcessor "com.querydsl:querydsl-apt:5.1.0:jakarta"
+    api "com.querydsl:querydsl-jpa:5.1.0:jakarta"
+    api "jakarta.persistence:jakarta.persistence-api:3.1.0"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api:3.1.0"
+}
+
+mainClassName = "com.taotao.cloud.shell.TaoTaoCloudShellApplication"
+description = "shell中心"
+archivesBaseName = 'taotao-cloud-shell'

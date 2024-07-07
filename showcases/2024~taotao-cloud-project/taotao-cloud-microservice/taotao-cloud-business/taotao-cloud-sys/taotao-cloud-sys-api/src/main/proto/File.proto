@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package com.taotao.cloud.file.api.grpc;
+
+option java_multiple_files = true;
+option java_package = "com.taotao.cloud.file.api.grpc";
+option java_outer_classname = "FileGrpcProto";
+//option objc_class_prefix = "HLW";
+
+service FileGrpcService {
+    rpc insertFile (File) returns (BooleanReply){}
+    rpc updateFile (File) returns (BooleanReply){}
+    rpc searchFile (ConditionsRequest) returns (File){}
+    rpc deleteFile (ConditionsRequest) returns (BooleanReply){}
+}
+
+message ConditionsRequest {
+    string id = 1;
+}
+
+message File {
+    string id = 1;
+    string serialNum = 2;
+    string userNum = 3;
+    int32  status = 4;
+    int32  type = 5;
+    string address = 6;
+    string createtime = 7;
+    string updatetime = 8;
+}
+
+message BooleanReply {
+    bool reply = 1;
+}
+
+message ObjectReply {
+    bool reply = 1;
+}

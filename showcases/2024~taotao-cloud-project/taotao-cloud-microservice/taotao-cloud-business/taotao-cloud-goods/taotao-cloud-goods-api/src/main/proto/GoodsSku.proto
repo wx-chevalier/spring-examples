@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package com.taotao.cloud.goods.api.grpc;
+
+option java_multiple_files = true;
+option java_package = "com.taotao.cloud.goods.api.grpc";
+option java_outer_classname = "GoodsSkuProto";
+//option objc_class_prefix = "HLW";
+
+// The device service definition.
+service GoodsSkuService {
+    // Sends a message
+    rpc updateGoodsStuck (DeviceFix) returns (BooleanReply){}
+    rpc updateBatchById (DeviceFix) returns (BooleanReply){}
+    rpc getGoodsSkuByIdFromCache (ConditionsRequest) returns (BooleanReply){}
+}
+
+// The request message .
+message ConditionsRequest {
+    string id = 1;
+}
+
+message DeviceFix {
+    string id = 1;
+    string serialNum = 2;
+    string userNum = 3;
+    int32  status = 4;
+    int32  type = 5;
+    string address = 6;
+    string createtime = 7;
+    string updatetime = 8;
+}
+
+// The response message
+message BooleanReply {
+    bool reply = 1;
+}
+
+// The response message
+message ObjectReply {
+    bool reply = 1;
+}

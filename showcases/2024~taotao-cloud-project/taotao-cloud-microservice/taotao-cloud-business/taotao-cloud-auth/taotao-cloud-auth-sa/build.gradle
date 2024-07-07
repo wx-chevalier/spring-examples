@@ -1,0 +1,78 @@
+dependencies {
+    implementation project(":taotao-cloud-microservice:taotao-cloud-business:taotao-cloud-auth:taotao-cloud-auth-api")
+    implementation project(":taotao-cloud-microservice:taotao-cloud-business:taotao-cloud-auth:taotao-cloud-auth-api")
+    implementation project(":taotao-cloud-microservice:taotao-cloud-business:taotao-cloud-auth:taotao-cloud-auth-api")
+    implementation project(":taotao-cloud-microservice:taotao-cloud-business:taotao-cloud-message:taotao-cloud-message-api")
+
+    implementation "io.github.shuigedeng:taotao-cloud-starter-core"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-logger"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-openfeign"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-springdoc"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-dubbo"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-office"
+
+    implementation "io.github.shuigedeng:taotao-cloud-starter-facility-alibaba"
+    //implementation "io.github.shuigedeng:taotao-cloud-starter-facility-tencent"
+    //implementation "io.github.shuigedeng:taotao-cloud-starter-facility-zookeeper"
+
+    implementation "io.github.shuigedeng:taotao-cloud-starter-sentinel"
+
+    implementation "io.github.shuigedeng:taotao-cloud-starter-data-p6spy"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-data-jpa"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-data-mybatis"
+
+    implementation "io.github.shuigedeng:taotao-cloud-starter-cache-redis"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-mq-kafka"
+
+    implementation "io.github.shuigedeng:taotao-cloud-starter-micrometer"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-skywalking"
+
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+    implementation "io.github.shuigedeng:taotao-cloud-starter-security-satoken"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-security-justauth"
+
+    // Sa-Token-OAuth2.0 模块
+    //https://search.maven.org/artifact/cn.dev33/sa-token-oauth2
+    implementation "cn.dev33:sa-token-oauth2:1.38.0"
+    //Sa-Token 插件：整合SSO
+    //https://search.maven.org/artifact/cn.dev33/sa-token-sso
+    implementation "cn.dev33:sa-token-sso:1.38.0"
+
+    annotationProcessor "com.querydsl:querydsl-apt:5.1.0:jakarta"
+    api "com.querydsl:querydsl-jpa:5.1.0:jakarta"
+    api "jakarta.persistence:jakarta.persistence-api:3.1.0"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api:3.1.0"
+}
+
+mainClassName = "com.taotao.cloud.sa.biz.TaoTaoCloudSaJustApplication"
+description = "sa认证中心biz"
+archivesBaseName = 'taotao-cloud-sajust'
+
+configurations {
+    all {
+        resolutionStrategy.cacheChangingModulesFor 0, "seconds"
+        resolutionStrategy.cacheDynamicVersionsFor 0, "seconds"
+
+        resolutionStrategy {
+            //force "org.codehaus.groovy:groovy:4.0.0"
+            //force 'org.antlr:antlr4:4.13.1'
+            force 'org.bouncycastle:bcprov-jdk18on:1.78.1'
+            force 'org.bouncycastle:bcpkix-jdk18on:1.78.1'
+            force 'org.bouncycastle:bcutil-jdk18on:1.78.1'
+        }
+
+        //exclude group: "log4j", module: "log4j"
+        //exclude group: "log4j", module: "slf4j-simple"
+        //exclude group: "org.slf4j", module: "slf4j-log4j12"
+        //exclude group: "org.apache.logging.log4j", module: "log4j-slf4j-impl"
+        //exclude group: "org.apache.logging.log4j", module: "log4j-to-slf4j"
+        //exclude group: "org.apache.logging.log4j", module: "log4j-api"
+        exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
+        exclude group: "commons-logging", module: "commons-logging"
+        exclude group: "org.bouncycastle", module: "bcprov-jdk15on"
+        exclude group: "org.bouncycastle", module: "bcpkix-jdk15on"
+        exclude group: "org.bouncycastle", module: "bcutil-jdk15on"
+    }
+}

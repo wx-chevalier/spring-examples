@@ -1,0 +1,72 @@
+plugins {
+    id "groovy"
+    id "java"
+    id "java-gradle-plugin"
+    id "groovy-gradle-plugin"
+    //https://plugins.gradle.org/docs/publish-plugin
+    //https://plugins.gradle.org/plugin/com.gradle.plugin-publish
+    id "com.gradle.plugin-publish" version "1.2.1"
+}
+
+//发布到 https://plugins.gradle.org
+apply plugin: "com.gradle.plugin-publish"
+apply plugin: "groovy-gradle-plugin"
+apply plugin: "java-gradle-plugin"
+apply plugin: "groovy"
+apply plugin: "java"
+
+dependencies {
+    //添加gradle版本
+    //implementation 'com.android.tools.build:gradle:3.3.2'
+    //implementation 'org.codehaus.groovy:groovy-all:2.5.8'
+    //implementation 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.21'
+
+    //添加gradle对应api
+    implementation gradleApi()
+    implementation localGroovy()
+
+    implementation "org.springframework.boot:spring-boot-gradle-plugin:3.3.1"
+}
+
+
+gradlePlugin {
+    website = 'https://github.com/shuigedeng/taotao-cloud-project'
+    vcsUrl = 'https://github.com/shuigedeng/taotao-cloud-project.git'
+    description = 'taotao-cloud-gradle-plugin'
+
+    plugins {
+        greetingsPlugin {
+            id = 'io.github.shuigedeng'
+            implementationClass = 'com.taotao.cloud.gradle.plugin.MyPlugin'
+            displayName = "taotao-cloud-plugin gradle plugin"
+            description = 'taotao-cloud-plugin gradle plugin Please use!'
+        }
+        bomPlugin {
+            id = "io.github.shuigedeng.bom"
+            implementationClass = "com.taotao.cloud.gradle.springboot.plugin.BomPlugin"
+            displayName = 'springboot bom plugin'
+            description = 'springboot bom plugin'
+            tags.set(['search', 'tags', 'for', 'your', 'hello', 'plugin'])
+        }
+        modulePlugin {
+            id = "io.github.shuigedeng.module"
+            implementationClass = "com.taotao.cloud.gradle.springboot.plugin.ModulePlugin"
+        }
+        commonPlugin {
+            id = "io.github.shuigedeng.common"
+            implementationClass = "com.taotao.cloud.gradle.springboot.plugin.CommonPlugin"
+        }
+        rootProjectPlugin {
+            id = "io.github.shuigedeng.root"
+            implementationClass = "com.taotao.cloud.gradle.springboot.plugin.RootPlugin"
+        }
+        servicePlugin {
+            id = "io.github.shuigedeng.service"
+            implementationClass = "com.taotao.cloud.gradle.springboot.plugin.ServicePlugin"
+        }
+        deployedPlugin {
+            id = "io.github.shuigedeng.deployed"
+            implementationClass = "com.taotao.cloud.gradle.springboot.plugin.DeployedPlugin"
+        }
+    }
+}

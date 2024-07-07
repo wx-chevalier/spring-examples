@@ -1,0 +1,6 @@
+spring:
+  profiles:
+    active: @activeProfile@
+#  config:
+#    activate:
+#      on-profile: dev

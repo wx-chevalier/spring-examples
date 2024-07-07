@@ -1,0 +1,39 @@
+# 不带字体
+# docker tag isahl/openjdk17:amd64 registry.cn-hangzhou.aliyuncs.com/taotao-cloud-project/taotao-cloud-openjdk17:amd64
+
+FROM registry.cn-hangzhou.aliyuncs.com/taotao-cloud-project/taotao-cloud-openjdk17:amd64
+
+USER root
+
+RUN mkdir /skywalking
+
+COPY ./skywalking-agent /skywalking/agent
+
+#docker build -t registry.cn-hangzhou.aliyuncs.com/taotao-cloud-project/taotao-cloud-skywalking:9.1.0 .
+
+
+# jre17 带字体
+# docker tag sunrdocker/jdk17-jre-font-openssl-alpine:latest registry.cn-hangzhou.aliyuncs.com/taotao-cloud-project/taotao-cloud-openjdk17:jre-font
+# docker push registry.cn-hangzhou.aliyuncs.com/taotao-cloud-project/taotao-cloud-openjdk17:jre-font
+
+FROM registry.cn-hangzhou.aliyuncs.com/taotao-cloud-project/taotao-cloud-openjdk17:jre-font
+
+USER root
+
+#wget https://dlcdn.apache.org/skywalking/java-agent/8.16.0/apache-skywalking-java-agent-8.16.0.tgz
+RUN mkdir /skywalking
+#wget https://github.com/grafana/pyroscope-java/releases/download/v0.11.5/pyroscope.jar
+RUN mkdir /pyroscope
+
+COPY ./skywalking-agent /skywalking/agent
+
+COPY ./pyroscope-agent /pyroscope/agent
+
+COPY ../taotao-cloud/healthcheck.sh /healthcheck.sh
+
+RUN chmod 755 /healthcheck.sh
+
+# docker build -t registry.cn-hangzhou.aliyuncs.com/taotao-cloud-project/taotao-cloud-openjdk17:skywalking8.16.0-pyroscope0.11.5-jre-font .
+
+# docker push registry.cn-hangzhou.aliyuncs.com/taotao-cloud-project/taotao-cloud-openjdk17:skywalking8.16.0-pyroscope0.11.5-jre-font
+

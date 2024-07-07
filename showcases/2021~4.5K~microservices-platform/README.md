@@ -1,165 +1,105 @@
-# zlt-microservices-platform
+## 一、什么是DoD？
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Version-5.5.0-critical" alt="Downloads"/>
-  <img src="https://img.shields.io/badge/Spring%20Boot-2.5.14-blue" alt="Downloads"/>
-  <img src="https://img.shields.io/badge/Spring%20Cloud-2020.0.6-blue" alt="Downloads"/>
-  <img src="https://img.shields.io/badge/Spring%20Cloud%20Alibaba-2021.1-blue" alt="Downloads"/>
-  <img src="https://img.shields.io/badge/Elasticsearch-7.x-brightgreen" alt="Downloads"/>
-  <img src="https://img.shields.io/badge/Ant%20Design-pro-9cf" alt="Downloads"/>
-  <a target="_blank" href='https://gitee.com/zlt2000/microservices-platform'>
-    <img src='https://gitee.com/zlt2000/microservices-platform/badge/star.svg' alt='star'/>
-  </a>
-  <a target="_blank" href='https://github.com/zlt2000/microservices-platform'>
-    <img src="https://img.shields.io/github/stars/zlt2000/microservices-platform.svg?style=social" alt="github star"/>
-  </a>
-</p>
+当你有两个或更多的人参与同一个事情的时候，我们的“团队”就产生了，这时我们最重要的事情，就是要设定和统一团队的期望值；在本文中，这就是**“完成标准”**。
 
-## 如果您觉得有帮助，请点右上角 "Star" 支持一下谢谢
+一个迭代做完后，团队要进行验收，来决定本个迭代是否完成。
 
-&nbsp;
+但每个团队对于是否完成无法达成统一，有的认为编码完成，就表示任务完成了；有的认为还需要简单自测一下，确保功能可以正常使用；还有的认为需要把自动化用例写完并测试通过才算完成。
 
-## 1. 总体架构图
+为了避免这个问题，在敏捷软件开发中，常用**Definition of Done“完成的定义”**来表示工作是否已完成，不同的活动有不同的完成定义。
 
-![mark](https://gitee.com/zlt2000/images/raw/master/springcloud%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E5%9B%BE.jpg)
+首先要知道：所有的DoD都不是一成不变的，在随着时间的推移、经验的积累、成员的变更、项目的变更，我们的DoD也会有很大的不同，所以我们也需要定期地检查和改进。
 
-&nbsp;
+## 二、DoD的分类
 
-## 2. 功能介绍
+有了上面的思想准备，我们再来看下面的DoD定义，就会觉得并没有那么难了。
 
-![mark](https://gitee.com/zlt2000/images/raw/master/ZLT-MP%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%B9%B3%E5%8F%B0%E5%8A%9F%E8%83%BD%E5%9B%BE.jpg)
+### 1. 迭代DoD
 
-&nbsp;
+最典型的是迭代DoD，这也是最初DoD应用的地方。
 
-## 3. 项目介绍
+常见的一些规则有：
 
-- **技术交流群**
-<table>
-    <tr>
-        <td><center><strong><a href="https://qm.qq.com/cgi-bin/qm/qr?k=HntAHTirZwCEjF8PQpjDYkw37Zx5rJg8&jump_from=webapi" target="_blank">交流三群</a></strong></center></td>
-	</tr>
-	<tr>
-        <td><a href="https://qm.qq.com/cgi-bin/qm/qr?k=HntAHTirZwCEjF8PQpjDYkw37Zx5rJg8&jump_from=webapi" target="_blank"><img width=250px height=300px alt="交流三群" src="http://qiniu.zlt2000.cn/blog/20210616/htVdgkFMohAm.png?imageslim"/></a></td>
-    </tr>
-</table>
+1. 所有代码通过静态检测，严重问题都已修改，静态分析的规则参见……
+2. 所有新增代码得到人工评审；
+3. 所有完成的用户故事都有对应的测试用例；
+4. 测试用例都已执行；
+5. 所有完成的用户故事得到Product Owner的验证。
 
-- **详细在线文档** ：https://www.kancloud.cn/zlt2000/microservices-platform/919418
-  - **[项目更新日志](https://www.kancloud.cn/zlt2000/microservices-platform/936235)**
-  - **[文档更新日志](https://www.kancloud.cn/zlt2000/microservices-platform/936236)**
-- **演示环境地址**： [http://zlt2000.cn](http://zlt2000.cn/)
-  - 账号密码：admin/admin
-  - APM 监控账号密码：admin/admin
-  - Grafana 账号：zlt/zlt123
-  - 任务管理账号密码：admin/123456
-- **演示环境有全方位的监控示例：日志系统 + APM 系统 + GPE 系统**
-- Gitee 地址：https://gitee.com/zlt2000/microservices-platform
-- Github 地址：https://github.com/zlt2000/microservices-platform
-- 前后端分离的企业级微服务架构
-- 主要针对解决微服务和业务开发时常见的**非功能性需求**
-- 深度定制`Spring Security`真正实现了基于`RBAC`、`jwt`和`oauth2`的无状态统一权限认证的解决方案
-- 提供应用管理，方便第三方系统接入，**支持多租户(应用隔离)**
-- 引入组件化的思想实现高内聚低耦合并且高度可配置化
-- 注重代码规范，严格控制包依赖，每个工程基本都是最小依赖
-- 非常适合学习和企业中使用
-  > 重构于开源项目 OCP&cp：https://gitee.com/owenwangwen/open-capacity-platform
+### 2. 发布DoD
 
-&nbsp;
+对于发布，一般就有更加严格的要求，发布DoD的典型条款有：
 
-## 4. 模块说明
+1. 完成发布规划所要求的重点需求；
+2. 至少通过一次全量回归测试；
+3. 修复所有等级为1、2的缺陷；3、4级缺陷不超过20个。
 
-```lua
-central-platform -- 父项目，公共依赖
-│  ├─zlt-business -- 业务模块一级工程
-│  │  ├─user-center -- 用户中心[7000]
-│  │  ├─file-center -- 文件中心[5000]
-│  │  ├─code-generator -- 代码生成器[7300]
-│  │  ├─search-center -- 搜索中心
-│  │  │  ├─search-client -- 搜索中心客户端
-│  │  │  ├─search-server -- 搜索中心服务端[7100]
-│  │─zlt-commons -- 通用工具一级工程
-│  │  ├─zlt-auth-client-spring-boot-starter -- 封装spring security client端的通用操作逻辑
-│  │  ├─zlt-common-core -- 封装通用操作逻辑
-│  │  ├─zlt-common-spring-boot-starter -- 封装通用操作逻辑
-│  │  ├─zlt-db-spring-boot-starter -- 封装数据库通用操作逻辑
-│  │  ├─zlt-log-spring-boot-starter -- 封装log通用操作逻辑
-│  │  ├─zlt-redis-spring-boot-starter -- 封装Redis通用操作逻辑
-│  │  ├─zlt-loadbalancer-spring-boot-starter -- 封装Loadbalancer和Feign的通用操作逻辑
-│  │  ├─zlt-sentinel-spring-boot-starter -- 封装Sentinel的通用操作逻辑
-│  │  ├─zlt-swagger2-spring-boot-starter -- 封装Swagger通用操作逻辑
-│  │  ├─zlt-elasticsearch-spring-boot-starter -- 封装Elasticsearch通用操作逻辑
-│  │  ├─zlt-oss-spring-boot-starter -- 封装对象存储通用操作逻辑
-│  │  ├─zlt-zookeeper-spring-boot-starter -- 封装Zookeeper通用操作逻辑
-│  ├─zlt-config -- 配置中心
-│  ├─zlt-doc -- 项目文档
-│  ├─zlt-gateway -- api网关一级工程
-│  │  ├─sc-gateway -- spring-cloud-gateway[9900]
-│  ├─zlt-monitor -- 监控一级工程
-│  │  ├─sc-admin -- 应用监控[6500]
-│  │  ├─log-center -- 日志中心[7200]
-│  ├─zlt-uaa -- spring-security认证中心[8000]
-│  ├─zlt-register -- 注册中心Nacos[8848]
-│  ├─zlt-web -- 前端一级工程
-│  │  ├─layui-web -- layui前端[8066]
-│  │  ├─react-web -- react前端[8066]
-│  ├─zlt-demo -- demo一级工程
-│  │  ├─txlcn-demo -- txlcn分布式事务demo
-│  │  ├─seata-demo -- seata分布式事务demo
-│  │  ├─sharding-jdbc-demo -- sharding-jdbc分库分表demo
-│  │  ├─rocketmq-demo -- rocketmq和mq事务demo
-│  │  ├─sso-demo -- 单点登录demo
-```
+### 3. 版本DoD
 
-<table>
-    <tr>
-        <td><a target="_blank" href="https://www.aliyun.com/minisite/goods?userCode=dickv1kw&share_source=copy_link"><img width="460px" height="177px" alt="阿里云" src="https://gitee.com/zlt2000/images/raw/master/aly.jpg"/></a></td>
-        <td><a target="_blank" href="https://cloud.tencent.com/act/cps/redirect?redirect=1074&cps_key=5516bbd5876cd224d90bd41d53d3f7fe&from=console"><img width="460px" height="177px"  alt="腾讯云" src="https://gitee.com/zlt2000/images/raw/master/txy.jpg"/></a></td>
-    </tr>
-</table>
+版本DoD就是针对每个版本上线前后的一些规则，比如：
 
-## 5. 交流反馈
+1. 产品文档已全部更新；
+2. 代码已部署到产品服务器上；
+3. 运维在验收测试环境上冒烟通过；
+4. 原始需求提交人对功能已经验收通过；
+5. 对运维、市场、客服的新功能培训已完成。
 
-- 有问题先看看 [F&Q](https://www.kancloud.cn/zlt2000/microservices-platform/981382) 中有没有相关的回答
-- 欢迎提交`ISSUS`，请写清楚问题的具体原因，重现步骤和环境(上下文)
-- 项目/微服务交流请进群：
-  - 一群：[250883130(已满)](https://shang.qq.com/wpa/qunwpa?idkey=17544199255998bda0d938fb72b08d076c40c52c9904520b76eb5eb0585da71e)
-  - 二群：[1041797659(已满)](https://shang.qq.com/wpa/qunwpa?idkey=41988facbc02f678942a7ee7ae03122f2ef0a10c948b3d07319f070bfb0d3a98)
-  - 三群：[512637767](https://qm.qq.com/cgi-bin/qm/qr?k=HntAHTirZwCEjF8PQpjDYkw37Zx5rJg8&jump_from=webapi)
-- 个人博客：[https://zlt2000.gitee.io](https://zlt2000.gitee.io)
-- 个人邮箱：zltdiablo@163.com
-- 个人公众号：[陶陶技术笔记](http://qiniu.zlt2000.cn/blog/20190902/M56cWjw7uNsc.png?imageslim)
-- GitChat：[https://gitbook.cn/gitchat/author/5b2362320398d50d7b7ab29e](https://gitbook.cn/gitchat/author/5b2362320398d50d7b7ab29e)
+### 4. 每日DoD
 
-&nbsp;
+其他典型的DoD有每日DoD，典型条款有：搭建每日构建环境，晚上自动静态代码检查、编译、部署和测试，每日修复前一日构建和测试发现的缺陷和问题。
 
-## 6. 截图（点击可大图预览）
+1. 下班前必须检入当天编写的代码，check in的backlog要填写清晰；
+2. 当天的代码必须在当天或者第2天邀请同伴进行代码评审；
+3. 检入的功能代码必须要有对应的单元测试（严格采用TDD）；
+4. 每天晚上触发静态代码检查、自动化回归测试；
+5. 当天持续集成、构建环境中的问题，请当天解决。
 
-<table>
-    <tr>
-        <td><img alt="首页" src="https://gitee.com/zlt2000/images/raw/master/%E9%A6%96%E9%A1%B5.png"/></td>
-        <td><img alt="用户搜索" src="https://gitee.com/zlt2000/images/raw/master/%E7%94%A8%E6%88%B7%E6%90%9C%E7%B4%A2.png"/></td>
-    </tr>
-    <tr>
-        <td><img alt="日志系统" src="https://gitee.com/zlt2000/images/raw/master/%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F.png"/></td>
-        <td><img alt="日志链路" src="https://gitee.com/zlt2000/images/raw/master/%E6%97%A5%E5%BF%97%E9%93%BE%E8%B7%AF.png"/></td>
-    </tr>
-	<tr>
-        <td><img alt="server_metrics" src="https://gitee.com/zlt2000/images/raw/master/server_metrics.png"/></td>
-        <td><img alt="application_metrics" src="https://gitee.com/zlt2000/images/raw/master/application_metrics.png"/></td>
-    </tr>
-    <tr>
-        <td><img alt="skywalking首页.png" src="https://gitee.com/zlt2000/images/raw/master/skywalking%E9%A6%96%E9%A1%B5.png"/></td>
-        <td><img alt="skywalking应用拓扑图" src="https://gitee.com/zlt2000/images/raw/master/skywalking%E5%BA%94%E7%94%A8%E6%8B%93%E6%89%91%E5%9B%BE.png"/></td>
-    </tr>
-    <tr>
-        <td><img alt="elk" src="https://gitee.com/zlt2000/images/raw/master/elk.png"/></td>
-        <td><img alt="任务中心" src="https://gitee.com/zlt2000/images/raw/master/%E4%BB%BB%E5%8A%A1%E4%B8%AD%E5%BF%83.png"/></td>
-    </tr>
-    <tr>
-        <td><img alt="日志中心02" src="https://gitee.com/zlt2000/images/raw/master/%E6%97%A5%E5%BF%97%E4%B8%AD%E5%BF%8302.png"/></td>
-        <td><img alt="慢查询sql" src="https://gitee.com/zlt2000/images/raw/master/%E6%85%A2%E6%9F%A5%E8%AF%A2sql.png"/></td>
-    </tr>
-    <tr>
-        <td><img alt="nacos-discovery" src="https://gitee.com/zlt2000/images/raw/master/nacos-discovery.png"/></td>
-        <td><img alt="应用吞吐量监控" src="https://gitee.com/zlt2000/images/raw/master/%E5%BA%94%E7%94%A8%E5%90%9E%E5%90%90%E9%87%8F%E7%9B%91%E6%8E%A7.png"/></td>
-    </tr>
-</table>
+### 5. 用户故事DoD
+
+还有针对用户故事（或者用例）的DoD，比如：
+
+1. 用户故事最终的描述符合INVEST
+2. 用户故事得到测试用例的对应覆盖
+3. 用户故事得到对应的自动化测试用例
+4. 用户故事得到PO试用并初步认可
+
+当测试集比较大的时候，无法在1天之内完成测试，可以开展每周全量回归自动化测试，这样就有每周DoD，典型条款有：
+
+1. 上上周发现的缺陷是否解决；
+2. 上周新增功能的自动化测试是否加入到每周测试集。
+
+**Tips：DoD 必须是团队在项目启动时共同讨论出来的，团队愿意共同遵守的原则，一旦确定，团队就应共同遵守。**
+
+## 三、DoD的实用价值
+
+### 1. DoD是对软件有价值的活动的清单
+
+DoD是一个简单的清单，包含了一系列的活动。
+
+例如：编码、加注释、单元测试、集成测试、发行声明、设计文档等等，所有这些活动都能够给产品带来实际的价值。使用DoD，可以让团队集中在那些必须完成的事情上，同时让那些无用的，仅仅使软件开发变得复杂的活动被消除掉。
+
+### 3. DoD是团队成员的主要状态参考依据
+
+对于迭代最简单形式的汇报就只有一句话：“这个feature完成了”。
+
+毕竟，一个feature或者一个product Backlog Item的状态只有两种：完成或未完成 。
+
+DoD是对“feature完成了”这句话的最佳补充。使用DoD作为参考标准，团队成员可以迅速有效地让其他团队成员或PO了解状态。
+
+### 3. DoD不是不变的
+
+DoD随着时间会改变。
+
+组织的帮助和团队能力的增加可以移除掉更多障碍，使得更多的活动可以包含到sprint或者feature的DoD中来。
+
+### 4. DoD是一个可以被审视的列表
+
+feature/用户故事在sprint plan meeting和sprint中都可以被拆分成task。
+
+DoD可以用来衡量是不是所有的主要工作都被计划在内的（剩余的时间），而且，在一个feature或者sprint结束的时候，DoD可以用来考查是不是所有的必须的增值活动都已经完成了。
+
+必须引起注意的是：DoD本身也是存在缺陷的。并不是所有的增值活动都可以应用到每一个feature上面，而DoD本身是一个大而全的检查事项的审核制度。团队需要基于一个feature来审视每项增值活动是否适用于这个feature。
+
+比如说：追求用户体验对于web服务这样的feature来说可以加分，但是对于其他的一些feature来说就是不必要的了。
+
+最后需要注意的是：对于验收标准，并不一定是由Product owner决定，要根据显示情况而定，**每个团队都要根据自己的情况选择合适的DoD原则**。

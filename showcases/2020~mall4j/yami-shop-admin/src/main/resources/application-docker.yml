@@ -1,0 +1,27 @@
+server:
+  port: 8085
+spring:
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:mall4j-mysql}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:yami_shops}?allowMultiQueries=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      minimum-idle: 0
+      maximum-pool-size: 20
+      idle-timeout: 25000
+      auto-commit: true
+      connection-test-query: SELECT 1
+  data:
+    redis:
+      host: ${REDIS_HOST:mall4j-redis}
+      port: ${REDIS_PORT:6379}
+      database: ${REDIS_DATABASE:0}
+logging:
+  config: classpath:logback/logback-prod.xml
+xxl-job:
+  accessToken: ${XXL_JOB_ACCESS_TOKEN:default_token}
+  logPath: ${XXL_JOB_LOG_PATH:/data/applogs/xxl-job/jobhandler}
+  admin:
+    addresses: ${XXL_JOB_ADDRESS:http://mall4j-job:8080/xxl-job-admin}

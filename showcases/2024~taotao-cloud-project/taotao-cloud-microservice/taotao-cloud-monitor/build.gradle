@@ -1,0 +1,96 @@
+dependencies {
+    implementation "io.github.shuigedeng:taotao-cloud-starter-bootstrap"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-core"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-logger"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-dingtalk"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-idgenerator"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-lock"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-prometheus"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-actuator"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-monitor"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-metrics"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-micrometer"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-mail"
+
+    implementation "io.github.shuigedeng:taotao-cloud-starter-micrometer"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-skywalking"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-facility-alibaba"
+
+    implementation "de.codecentric:spring-boot-admin-starter-server"
+
+    implementation "org.springframework.boot:spring-boot-starter-security"
+    implementation "org.springframework.boot:spring-boot-starter-mail"
+
+    implementation("org.springframework.boot:spring-boot-starter-web") {
+        exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
+    }
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "org.springframework.boot:spring-boot-starter-undertow"
+    implementation "org.springframework.boot:spring-boot-autoconfigure"
+
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}"
+}
+
+mainClassName = "com.taotao.cloud.monitor.TaoTaoCloudMonitorApplication"
+description = "监控中心"
+archivesBaseName = 'taotao-cloud-monitor'
+
+configurations {
+    all {
+        exclude group: "org.springframework.boot", module: "spring-boot-starter-data-jpa"
+        exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
+        exclude group: "com.querydsl", module: "querydsl-apt"
+        exclude group: "commons-logging", module: "commons-logging"
+    }
+}
+
+bootDistZip{
+    archiveBaseName = "${project.name}"
+    archiveFileName = "${project.name}.zip"
+
+    from('src/main/resources/distribution/bin') {
+        include '**'
+
+        into "${project.name}/bin"
+    }
+
+    from('src/main/resources/distribution/conf') {
+        include '**'
+
+        into "${project.name}/conf"
+    }
+
+    from('build/libs') {
+        include '**'
+
+        into "${project.name}/target"
+    }
+
+    doLast {
+        delete "${project.name}/lib"
+    }
+}
+
+task dis(type: Zip, dependsOn: bootJar) {
+
+    archiveFileName = "${project.name}.zip"
+
+    from('src/main/resources/distribution/bin') {
+        include '**'
+
+        into "bin"
+    }
+
+    from('src/main/resources/distribution/conf') {
+        include '**'
+
+        into "conf"
+    }
+
+    from('build/libs') {
+        include '*.jar'
+
+        into "target"
+    }
+
+}

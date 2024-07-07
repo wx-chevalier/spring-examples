@@ -1,0 +1,81 @@
+# 代码质量检测 https://github.com/marketplace/actions/qodana-scan
+name: Qodana Code Quality
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - master
+      - 'releases/*'
+
+jobs:
+  qodana:
+    runs-on: ubuntu-latest
+    #if: ${{ contains(github.event.head_commit.message, 'taotao-cloud-qodana') }}
+    steps:
+      #https://github.com/marketplace/actions/checkout
+      - name: Checkout Project
+        uses: actions/checkout@v4.1.7
+        with:
+          fetch-depth: 0
+
+      #https://github.com/marketplace/actions/qodana-scan
+      - name: Qodana Scan
+        uses: JetBrains/qodana-action@v2024.1
+        with:
+          #args: "--project-dir ${{ github.workflow }}/taotao-cloud-microservice"
+          results-dir: ${{ github.workspace }}/qodana/results
+
+      - name: Upload Sarif
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: ${{ github.workspace }}/qodana/results/qodana.sarif.json
+
+      #https://github.com/marketplace/actions/github-pages-action
+      - name: Deploy To GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.TAOTAO_CLOUD_GITHUB_TOKEN }}
+          publish_dir: ${{ github.workspace }}/qodana/results/report
+          destination_dir: ./
+
+      #https://github.com/marketplace/actions/ssh-deploy
+      - name: Deploy To Server
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          ARGS: "-rltgoDzvO --delete"
+          SOURCE: "qodana/results/report/"
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          TARGET: ${{ secrets.REMOTE_QODANA_TARGET }}
+
+      - name: build success
+        if: ${{ success() }}
+        uses: zcong1993/actions-ding@master
+        with:
+          dingToken: ${{ secrets.DING_TOKEN }}
+          secret: ${{ secrets.DING_SECRET }}
+          # body 内容 https://blog.csdn.net/lxw1844912514/article/details/125747327
+          body: |
+            {
+              "msgtype": "text",
+              "text": {
+                  "content": "taotao github action [taotao-cloud-code-quality] success"
+              }
+            }
+
+      - name: build failure
+        if: ${{ failure() }}
+        uses: zcong1993/actions-ding@master
+        with:
+          dingToken: ${{ secrets.DING_TOKEN }}
+          secret: ${{ secrets.DING_SECRET }}
+          # body 内容 https://blog.csdn.net/lxw1844912514/article/details/125747327
+          body: |
+            {
+              "msgtype": "text",
+              "text": {
+                  "content": "taotao github action [taotao-cloud-code-quality] failure"
+              }
+            }

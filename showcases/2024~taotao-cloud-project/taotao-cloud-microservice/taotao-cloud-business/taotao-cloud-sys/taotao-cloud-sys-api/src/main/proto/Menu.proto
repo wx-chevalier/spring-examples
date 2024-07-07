@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/type.proto";
+import "google/protobuf/descriptor.proto";
+import "google/protobuf/duration.proto";
+
+package com.taotao.cloud.sys.api.grpc;
+
+option java_multiple_files = true;
+option java_package = "com.taotao.cloud.sys.api.grpc";
+option java_outer_classname = "MenuServiceProto";
+//option objc_class_prefix = "HLW";
+
+service MenuService {
+  rpc findResourceByCodes (MenuRequest) returns (MenuResponse){}
+}
+
+message MenuRequest {
+  repeated string codes = 1;
+}
+
+message MenuResponse {
+  int64 id = 1;
+  string name = 2;
+  int32 type = 3;
+  string perms = 4;
+  string path = 5;
+  string component = 6;
+  int64 parentId = 7;
+  string icon = 8;
+  bool keepAlive = 9;
+  bool hidden = 10;
+  bool alwaysShow = 11;
+  string redirect = 12;
+  bool isFrame = 13;
+  int32 sortNum = 14;
+  google.protobuf.Timestamp createTime = 15;
+  google.protobuf.Timestamp lastModifiedTime = 16;
+}
+

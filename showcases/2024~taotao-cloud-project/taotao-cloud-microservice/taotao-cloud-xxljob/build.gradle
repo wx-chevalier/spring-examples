@@ -1,0 +1,56 @@
+dependencies {
+    implementation "io.github.shuigedeng:taotao-cloud-starter-core"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-logger"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-dingtalk"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-mail"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-data-p6spy"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-idgenerator"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-lock"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-prometheus"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-actuator"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-skywalking"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-micrometer"
+    implementation "io.github.shuigedeng:taotao-cloud-starter-facility-alibaba"
+
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.boot:spring-boot-starter-freemarker"
+    implementation "org.springframework.boot:spring-boot-starter-actuator"
+    implementation "org.springframework.boot:spring-boot-starter-undertow"
+
+    //https://search.maven.org/artifact/com.github.gavlyukovskiy/datasource-proxy-spring-boot-starter
+    implementation 'com.github.gavlyukovskiy:datasource-proxy-spring-boot-starter:1.9.1'
+
+    //https://search.maven.org/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter
+    implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3"
+    implementation "com.mysql:mysql-connector-j"
+    implementation "com.xuxueli:xxl-job-core"
+}
+
+mainClassName = "com.taotao.cloud.xxljob.TaoTaoCloudXxlJobApplication"
+description = "xxljob中心"
+archivesBaseName = 'taotao-cloud-xxljob'
+
+
+configurations {
+    all {
+        resolutionStrategy.cacheChangingModulesFor 0, "seconds"
+        resolutionStrategy.cacheDynamicVersionsFor 0, "seconds"
+
+        resolutionStrategy {
+            //force "org.codehaus.groovy:groovy:4.0.0"
+            //force "com.alibaba.nacos:nacos-client:2.1.0"
+        }
+
+
+        //exclude group: "org.codehaus.groovy", module: "groovy"
+        //exclude group: "org.projectlombok", module: "lombok"
+        //exclude group: "log4j", module: "log4j"
+        //exclude group: "log4j", module: "slf4j-simple"
+        //exclude group: "org.slf4j", module: "slf4j-log4j12"
+        //exclude group: "org.apache.logging.log4j", module: "log4j-slf4j-impl"
+        //exclude group: "org.apache.logging.log4j", module: "log4j-to-slf4j"
+        //exclude group: "org.apache.logging.log4j", module: "log4j-api"
+        exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
+        exclude group: "org.springframework.boot", module: "spring-boot-starter-data-jpa"
+    }
+}

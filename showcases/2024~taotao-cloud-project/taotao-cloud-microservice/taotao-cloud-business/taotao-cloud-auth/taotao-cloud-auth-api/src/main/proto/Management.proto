@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package com.taotao.cloud.auth.api.grpc;
+
+option java_multiple_files = true;
+option java_package = "com.taotao.cloud.auth.api.grpc";
+option java_outer_classname = "ManagementServiceProto";
+//option objc_class_prefix = "HLW";
+
+service ManagementService {
+  rpc create (ManagementRequest) returns (ManagementResponse){}
+}
+
+message ManagementRequest {
+  string id = 1;
+}
+message ManagementResponse {
+  string id = 1;
+}

@@ -1,0 +1,147 @@
+# 构建graalvm docker images
+#### https://github.com/marketplace?type=actions
+#### https://github.com/sdras/awesome-actions
+
+name: Microservice Docker graalvm Image
+
+on:
+  push:
+    branches: [ master ]
+
+env:
+  TAOTAO_CLOUD_OSSRH_USERNAME: ${{ secrets.TAOTAO_CLOUD_OSSRH_USERNAME }}
+  TAOTAO_CLOUD_OSSRH_PASSWORD: ${{ secrets.TAOTAO_CLOUD_OSSRH_PASSWORD }}
+  TAOTAO_CLOUD_MAVEN_USERNAME: ${{ secrets.TAOTAO_CLOUD_MAVEN_USERNAME }}
+  TAOTAO_CLOUD_MAVEN_USERNAME_NEW: ${{ secrets.TAOTAO_CLOUD_MAVEN_USERNAME_NEW }}
+  TAOTAO_CLOUD_MAVEN_PASSWORD: ${{ secrets.TAOTAO_CLOUD_MAVEN_PASSWORD }}
+  TAOTAO_CLOUD_MAVEN_PASSWORD_NEW: ${{ secrets.TAOTAO_CLOUD_MAVEN_PASSWORD_NEW }}
+  TAOTAO_CLOUD_GITHUB_USERNAME: ${{ secrets.TAOTAO_CLOUD_GITHUB_USERNAME }}
+  TAOTAO_CLOUD_GITHUB_TOKEN: ${{ secrets.TAOTAO_CLOUD_GITHUB_TOKEN }}
+  TAOTAO_CLOUD_REGISTRY_USERNAME: ${{ secrets.TAOTAO_CLOUD_REGISTRY_USERNAME }}
+  TAOTAO_CLOUD_REGISTRY_PASSWORD: ${{ secrets.TAOTAO_CLOUD_REGISTRY_PASSWORD }}
+  TAOTAO_CLOUD_VERSION: 2024.07
+
+jobs:
+  build:
+    name: demo graalvm on ubuntu-latest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v4.1.7
+
+      - name: show release
+        run: lsb_release -a
+
+      #https://github.com/marketplace/actions/github-action-for-graalvm
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '21'
+          distribution: 'graalvm'
+          github-token: ${{ secrets.TAOTAO_CLOUD_GITHUB_TOKEN }}
+          native-image-job-reports: 'true'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3.4.1
+        with:
+          gradle-version: 8.7
+
+      - name: Example step
+        run: |
+          echo "GRAALVM_HOME: $GRAALVM_HOME"
+          echo "JAVA_HOME: $JAVA_HOME"
+          java --version
+          native-image --version
+
+      - name: write secrets maven username password
+        run: |
+          echo "mavenUsernameNew=${{ secrets.TAOTAO_CLOUD_MAVEN_USERNAME_NEW }}" >> gradle.properties
+          echo "mavenPasswordNew=${{ secrets.TAOTAO_CLOUD_MAVEN_PASSWORD_NEW }}" >> gradle.properties
+
+      #https://github.com/marketplace/actions/gradle-build-action  bootBuildImage
+      - name: Gradle nativeBuild monitor
+        run: gradle -p taotao-cloud-microservice/taotao-cloud-monitor nativeBuild
+
+      #- name: Publish Docker Image taotao-cloud-demo
+      #  uses: elgohr/Publish-Docker-Github-Action@v4
+      #  with:
+      #    name: registry.cn-hangzhou.aliyuncs.com/taotao-cloud-project/taotao-cloud-demo
+      #    username: ${{ secrets.TAOTAO_CLOUD_REGISTRY_USERNAME }}
+      #    password: ${{ secrets.TAOTAO_CLOUD_REGISTRY_PASSWORD }}
+      #    registry: registry.cn-hangzhou.aliyuncs.com
+      #    buildoptions: "--compress --force-rm"
+      #    tags: "${{env.TAOTAO_CLOUD_VERSION}}"
+      #    #dockerfile: MyDockerFileName
+
+    #name: demo graalvm on ${{ matrix.os }}
+    #runs-on: ${{ matrix.os }}
+    #strategy:
+    #  matrix:
+    #    os: [ macos-latest, windows-latest, ubuntu-latest ]
+    #steps:
+    #  - name: Checkout Project
+    #    uses: actions/checkout@v4.1.7
+    #  - uses: graalvm/setup-graalvm@v1
+    #    with:
+    #      version: '22.3.2'
+    #      java-version: '21'
+    #      components: 'native-image'
+    #      github-token: ${{ secrets.TAOTAO_CLOUD_GITHUB_TOKEN }}
+    #      native-image-job-reports: 'true'
+    #  - name: Gradle BootJar taotao-cloud-monitor
+    #    uses: gradle/actions/setup-gradle@v3.4.1
+    #    with:
+    #      gradle-version: 7.6
+    #      arguments: nativeBuild
+    #      #build-root-directory: ${{ github.workspace }}/taotao-cloud-microservice/taotao-cloud-monitor
+
+      - name: build success
+        if: ${{ success() }}
+        uses: zcong1993/actions-ding@master
+        with:
+          dingToken: ${{ secrets.DING_TOKEN }}
+          secret: ${{ secrets.DING_SECRET }}
+          # body 内容 https://blog.csdn.net/lxw1844912514/article/details/125747327
+          body: |
+            {
+              "msgtype": "text",
+              "text": {
+                  "content": "taotao github action [taotao-cloud-microservice-graalvm] publish docker image success"
+              }
+            }
+
+      - name: build failure
+        if: ${{ failure() }}
+        uses: zcong1993/actions-ding@master
+        with:
+          dingToken: ${{ secrets.DING_TOKEN }}
+          secret: ${{ secrets.DING_SECRET }}
+          # body 内容 https://blog.csdn.net/lxw1844912514/article/details/125747327
+          body: |
+            {
+              "msgtype": "text",
+              "text": {
+                  "content": "taotao github action [taotao-cloud-microservice-graalvm] publish docker image failure"
+              }
+            }
+
+#      - name: build success
+#        if: ${{ success() }}
+#        uses: fifsky/dingtalk-action@master
+#        with:
+#          url: https://oapi.dingtalk.com/robot/send?access_token=${{ secrets.TAOTAO_CLOUD_DINGTAOK_TOKEN }}
+#          type: markdown
+#          content: |
+#            # 💯👨‍💻 Success 🎉🎉🎉
+#            > [Microservice Starters Publish Aliyun] Publish Docker success
+#            > ^_^ from github action message
+#
+#      - name: build error
+#        if: ${{ error() }}
+#        uses: fifsky/dingtalk-action@master
+#        with:
+#          url: https://oapi.dingtalk.com/robot/send?access_token=${{ secrets.TAOTAO_CLOUD_DINGTAOK_TOKEN }}
+#          type: markdown
+#          content: |
+#            # 💯👨‍💻 Error 🎉🎉🎉
+#            > [Microservice Starters Publish Aliyun] Publish Docker error
+#            > ^_^ from github action message

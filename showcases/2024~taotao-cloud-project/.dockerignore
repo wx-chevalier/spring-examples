@@ -1,0 +1,6 @@
+/**/target
+/**/build
+/**/gradle
+.gradle
+doc
+kubernetes

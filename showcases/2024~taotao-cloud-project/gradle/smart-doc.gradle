@@ -1,0 +1,18 @@
+apply plugin: "com.ly.smart-doc"
+
+smartdoc {
+    configFile = file("src/main/resources/smart-doc.json")
+
+//    // exclude example
+//    // exclude artifact
+//    exclude 'org.springframework.boot:spring-boot-starter-tomcat'
+//    // exclude artifact use pattern
+//    exclude 'org.springframework.boot.*'
+//    // You can use the include configuration to let the plugin automatically load the specified source.
+//    // include example
+//    include 'org.springframework.boot:spring-boot-starter-tomcat'
+//    // 使用jpa的分页
+//    include 'org.springframework.data:spring-data-commons'
+//    // 使用mybatis-plus的分页
+//    include 'com.baomidou:mybatis-plus-extension'
+}

@@ -1,0 +1,421 @@
+/*
+ * Copyright (c) 2020-2030, Shuigedeng (981376577@qq.com & https://blog.taotaocloud.top/).
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/*
+    buildscript代码块中的声明是gradle脚本自身需要的资源。
+    可以声明的资源包括依赖项、第三方插件、maven仓库地址等。
+    gradle在执行脚本时，会优先执行buildscript代码块中的内容，然后才会执行剩余的build脚本。
+    该部分代码应该置顶
+*/
+buildscript {
+    ext {
+        ttcVersion = version
+        ttcGroup = "io.github.shuigedeng"
+
+        springBootVersion = "3.3.1"
+        querydslAptVersion = "5.1.0"
+        mapstructProcessorVersion = "1.6.0.Beta2"
+        lombokMapstructBindingVersion = "0.2.0"
+        lombokVersion = "1.18.32"
+        recordBuilderVersion = "41"
+    }
+
+    repositories {
+        mavenLocal()
+        maven { url "https://plugins.gradle.org/m2/" }
+
+        maven {
+            allowInsecureProtocol = true
+            url "https://maven.aliyun.com/nexus/content/groups/public/"
+        }
+        maven {
+            allowInsecureProtocol = true
+
+            credentials {
+                username = findProperty("mavenUsername") ?: System.getenv("TAOTAO_CLOUD_MAVEN_USERNAME")
+                password = findProperty("mavenPassword") ?: System.getenv("TAOTAO_CLOUD_MAVEN_PASSWORD")
+            }
+            url 'https://repo.rdc.aliyun.com/repository/136936-release-reey0l/'
+        }
+        //阿里云新的仓库
+        maven {
+            credentials {
+                username = findProperty("mavenUsernameNew") ?: System.getenv("TAOTAO_CLOUD_MAVEN_USERNAME_NEW")
+                password = findProperty("mavenPasswordNew") ?: System.getenv("TAOTAO_CLOUD_MAVEN_PASSWORD_NEW")
+            }
+            url 'https://packages.aliyun.com/maven/repository/2085441-release-8V0qBs/'
+        }
+
+        maven {
+            allowInsecureProtocol = true
+            url "http://mirrors.cloud.tencent.com/nexus/repository/maven-public/"
+        }
+
+        maven {
+            allowInsecureProtocol = true
+            url "https://mirrors.huaweicloud.com/repository/maven/"
+        }
+
+        mavenCentral()
+        gradlePluginPortal()
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+        maven { url 'https://repo.spring.io/release' }
+
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        google()
+
+        maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
+    }
+
+    dependencies {
+        /* 添加插件依赖路径（通过jar方式） */
+
+        //https://plugins.gradle.org/m2/com/github/spotbugs/snom/spotbugs-gradle-plugin/
+        classpath "com.github.spotbugs.snom:spotbugs-gradle-plugin:6.0.17"
+
+        //https://github.com/spring-io/spring-javaformat/
+        classpath "io.spring.javaformat:spring-javaformat-gradle-plugin:0.0.42"
+
+        //代码混淆工具
+        //https://github.com/Guardsquare/proguard
+        //https://www.guardsquare.com/manual/quickstart
+        classpath "com.guardsquare:proguard-gradle:7.5.0"
+
+        //https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html#configuration-intellij-extension
+        //https://plugins.gradle.org/plugin/org.jetbrains.intellij
+        classpath "org.jetbrains.intellij.plugins:gradle-intellij-plugin:1.17.4"
+    }
+}
+
+plugins {
+    // *******************************************gradle核心插件************************************************************
+    //https://docs.gradle.org/current/userguide/plugin_reference.html
+
+    //Java 插件将 Java 编译以及测试和捆绑功能添加到项目中。它是许多其他 JVM 语言 Gradle 插件的基础
+    //https://docs.gradle.org/current/userguide/java_plugin.html#java_plugin
+    id 'java'
+    // Java 库插件通过提供有关 Java 库的特定知识来扩展 Java 插件的功能。
+    //https://docs.gradle.org/current/userguide/java_library_plugin.html#java_library_plugin
+    id 'java-library'
+    //IDEA 插件生成 IntelliJ IDEA 使用的文件，从而可以从 IDEA（文件 - 打开项目）打开项目。外部依赖项（包括相关的源文件和 Javadoc 文件）和项目依赖项都被考虑在内。
+    //https://docs.gradle.org/current/userguide/idea_plugin.html#idea_plugin
+    id 'idea'
+    //签名插件增加了对构建文件和工件进行数字签名的能力。然后，这些数字签名可用于证明谁构建了签名所附加的工件以及其他信息，例如生成签名的时间。
+    //https://docs.gradle.org/current/userguide/signing_plugin.html#signing_plugin
+    id 'signing'
+    //Maven 发布插件提供了将构建工件发布到 Apache Maven 存储库的能力
+    //https://docs.gradle.org/current/userguide/publishing_maven.html#publishing_maven
+    id 'maven-publish'
+    //JaCoCo 插件通过与 JaCoCo 集成为 Java 代码提供代码覆盖率指标。
+    //https://docs.gradle.org/current/userguide/jacoco_plugin.html#jacoco_plugin
+    id 'jacoco'
+    //Checkstyle 插件使用 Checkstyle 对项目的 Java 源文件执行质量检查，并根据这些检查生成报告。
+    //https://docs.gradle.org/current/userguide/checkstyle_plugin.html#checkstyle_plugin
+    id 'checkstyle'
+    //Application 插件有助于创建可执行的 JVM 应用程序。它可以在开发过程中轻松地在本地启动应用程序，并将应用程序打包为 TAR 和/或 ZIP，包括操作系统特定的启动脚本。
+    //https://docs.gradle.org/current/userguide/application_plugin.html#application_plugin
+    id 'application'
+    //https://docs.gradle.org/current/userguide/pmd_plugin.html
+    id 'pmd'
+    //https://docs.gradle.org/current/userguide/project_report_plugin.html#project_report_plugin
+    id 'project-report'
+
+    // *******************************************第三方插件************************************************************
+    //google出品的一个插件，可以直接将SpringBoot构建推送到Docker仓库
+    //https://plugins.gradle.org/plugin/com.google.cloud.tools.jib
+    id "com.google.cloud.tools.jib" version "3.4.3"
+
+    //用于创建和管理外部进程的 Gradle 插件。
+    //https://plugins.gradle.org/plugin/com.github.johnrengelman.processes
+    id "com.github.johnrengelman.processes" version "0.5.0"
+
+    //此插件在构建期间生成 json OpenAPI 描述
+    // https://plugins.gradle.org/plugin/org.springdoc.openapi-gradle-plugin
+    id "org.springdoc.openapi-gradle-plugin" version "1.8.0"
+
+    //smart-doc gradle 插件
+    // https://plugins.gradle.org/plugin/com.ly.smart-doc
+    id "com.ly.smart-doc" version "3.0.5"
+
+    //OWASP 依赖检查插件。
+    //https://plugins.gradle.org/plugin/org.owasp.dependencycheck
+    id "org.owasp.dependencycheck" version "9.2.0"
+
+    //用于管理 Docker 镜像和容器的 Gradle 插件。
+    //https://plugins.gradle.org/plugin/com.bmuschko.docker-spring-boot-application
+    id "com.bmuschko.docker-spring-boot-application" version "9.4.0"
+
+    //Gradle 插件，用于将所有依赖项和项目代码折叠到一个 Jar 文件中。
+    //https://plugins.gradle.org/plugin/com.github.johnrengelman.shadow
+    id "com.github.johnrengelman.shadow" version "8.1.1"
+
+    //用于运行 SonarQube 分析的 Gradle 插件。
+    //https://plugins.gradle.org/plugin/org.sonarqube
+    id "org.sonarqube" version "5.0.0.4638"
+
+    //Spring Boot 可以轻松创建独立的、生产级的基于 Spring 的应用程序，您可以“直接运行”
+    // 我们对 Spring 平台和第三方库持固执己见的看法，
+    // 大多数 Spring Boot 应用程序只需要很少的 Spring 配置
+    //https://plugins.gradle.org/plugin/org.springframework.boot
+    id "org.springframework.boot" version "3.3.1"
+
+    //一个 Gradle 插件，提供类似 Maven 的依赖管理功能
+    //https://plugins.gradle.org/plugin/io.spring.dependency-management
+    id 'io.spring.dependency-management' version '1.1.5'
+
+    //Protobuf 插件为您的项目提供 protobuf 编译。
+    //https://plugins.gradle.org/plugin/com.google.protobuf
+    id "com.google.protobuf" version "0.9.4"
+
+    //https://github.com/diffplug/spotless/blob/main/plugin-gradle/README.md
+    //https://plugins.gradle.org/plugin/com.diffplug.spotless
+    id "com.diffplug.spotless" version "6.25.0"
+
+    //https://plugins.gradle.org/plugin/com.gorylenko.gradle-git-properties
+    id "com.gorylenko.gradle-git-properties" version "2.4.2"
+
+    //https://graalvm.github.io/native-build-tools/latest/gradle-plugin.html
+    id 'org.graalvm.buildtools.native' version '0.10.2'
+
+    //https://github.com/kimichen13/mybatis-generator-plugin
+    //https://plugins.gradle.org/plugin/com.qqviaja.gradle.MybatisGenerator
+    id "com.qqviaja.gradle.MybatisGenerator" version "2.5"
+
+    //https://plugins.gradle.org/plugin/io.swagger.core.v3.swagger-gradle-plugin
+    //https://github.com/swagger-api/swagger-core/tree/master/modules/swagger-gradle-plugin
+    id "io.swagger.core.v3.swagger-gradle-plugin" version "2.2.22"
+
+    id 'org.cyclonedx.bom' version '1.8.2'
+
+    //alias(projectLibs.plugins.springboot)
+    //alias(projectLibs.plugins.kotlin.jvm)
+    //alias(projectLibs.plugins.kotlin.spring)
+    //alias(projectLibs.plugins.docker)
+}
+
+// 定义库引用
+//var pLibs = projectLibs
+
+allprojects {
+    version project.ttcVersion
+    group project.ttcGroup
+
+    // 全部项目有基础插件kotlin jvm/spring
+    //apply {
+    //    plugin(pLibs.plugins.kotlin.jvm.get().pluginId)
+    //    plugin(pLibs.plugins.kotlin.spring.get().pluginId)
+    //}
+    // 统一group和version
+    //group = "com.terra.ns.imp"
+    //version = pLibs.versions.imp.service.get()
+    //java.sourceCompatibility = JavaVersion.VERSION_17
+
+    //dependencies {
+    //    // bom 管理着一组依赖的版本，各模块按需引入其中的依赖即可，由bom统一约束着版本，
+    //    // spring boot bom
+    //    implementation(platform(pLibs.spring.boot))
+    //}
+
+    java {
+        /* 指定jdk版本 */
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        options.compilerArgs += "--enable-preview"
+    }
+    tasks.withType(Test).configureEach {
+        jvmArgs += "--enable-preview"
+    }
+    tasks.withType(JavaExec).configureEach {
+        jvmArgs += "--enable-preview"
+    }
+    javadoc.options {
+        addBooleanOption('-enable-preview', true)
+        addStringOption('-release', '21')
+    }
+
+    /* java编译的时候缺省状态下会因为中文字符而失败 */
+    [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+
+    compileJava.options.compilerArgs.add '-parameters'
+    compileTestJava.options.compilerArgs.add '-parameters'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+
+        maven {
+            url "https://repo1.maven.org/maven2"
+        }
+
+        maven {
+            allowInsecureProtocol = true
+            url 'https://maven.aliyun.com/repository/public'
+        }
+        maven {
+            allowInsecureProtocol = true
+
+            credentials {
+                username = findProperty("mavenUsername") ?: System.getenv("TAOTAO_CLOUD_MAVEN_USERNAME")
+                password = findProperty("mavenPassword") ?: System.getenv("TAOTAO_CLOUD_MAVEN_PASSWORD")
+            }
+            url 'https://repo.rdc.aliyun.com/repository/136936-release-reey0l/'
+        }
+        //阿里云新的仓库
+        maven {
+            credentials {
+                username = findProperty("mavenUsernameNew") ?: System.getenv("TAOTAO_CLOUD_MAVEN_USERNAME_NEW")
+                password = findProperty("mavenPasswordNew") ?: System.getenv("TAOTAO_CLOUD_MAVEN_PASSWORD_NEW")
+            }
+            url 'https://packages.aliyun.com/maven/repository/2085441-release-8V0qBs/'
+        }
+
+        maven {
+            allowInsecureProtocol = true
+            url "http://mirrors.cloud.tencent.com/nexus/repository/maven-public/"
+        }
+
+        maven {
+            allowInsecureProtocol = true
+            url "https://mirrors.huaweicloud.com/repository/maven/"
+        }
+
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+        maven { url 'https://repo.spring.io/release' }
+
+        maven { url "https://maven.aliyun.com/repository/central" }
+        maven { url "https://maven.aliyun.com/repository/public" }
+        maven { url "https://maven.aliyun.com/repository/google" }
+        maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
+        maven { url "https://maven.aliyun.com/repository/spring" }
+        maven { url "https://maven.aliyun.com/repository/spring-plugin" }
+        maven { url "https://maven.aliyun.com/repository/grails-core" }
+        maven { url "https://maven.aliyun.com/repository/apache-snapshots" }
+
+        maven { url "https://repository.aspose.com/repo/" }
+        maven { url "https://repo.e-iceblue.cn/repository/maven-public/" }
+
+        maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+    }
+}
+
+def excludeSubProjects = ['taotao-cloud-maven-plugin', 'taotao-cloud-idea-plugin', 'taotao-cloud-gradle-plugin']
+configure(subprojects.findAll { (!excludeSubProjects.contains(it.name)) }) { project ->
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'idea'
+
+    apply plugin: "org.owasp.dependencycheck"
+
+    apply plugin: "org.cyclonedx.bom"
+
+    apply from: rootProject.file('gradle/jacoco.gradle')
+    apply from: rootProject.file('gradle/publish-jar.gradle')
+    apply from: rootProject.file('gradle/test.gradle')
+    apply from: rootProject.file('gradle/checkstyle.gradle')
+    apply from: rootProject.file('gradle/spotless.gradle')
+    apply from: rootProject.file('gradle/spotbugs.gradle')
+    apply from: rootProject.file('gradle/pmd.gradle')
+    apply from: rootProject.file('gradle/project-report.gradle')
+    apply from: rootProject.file('gradle/git.gradle')
+
+    dependencies {
+        implementation platform("io.github.shuigedeng:taotao-cloud-dependencies:$ttcVersion")
+    }
+
+    configurations {
+        all {
+            resolutionStrategy {
+                cacheChangingModulesFor 0, "seconds"
+                cacheDynamicVersionsFor 0, "seconds"
+            }
+        }
+
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+
+        // 排除 logback 依赖（使用 log4j2）
+        //implementation.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+        // 排除 tomcat 依赖（使用 undertow）
+        //implementation.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    }
+
+    // 编译
+    compileJava {
+        options.compilerArgs += ['-Xlint:unchecked',
+                                 '-Xlint:deprecation',
+                                 '--enable-preview',
+                                 '--add-exports=java.desktop/sun.font=ALL-UNNAMED',
+                                 '--add-exports=java.base/sun.reflect.generics.tree=ALL-UNNAMED',
+                                 '--add-exports=java.base/sun.net.www.protocol.ftp=ALL-UNNAMED',
+                                 '--add-exports=java.desktop/sun.awt=ALL-UNNAMED',
+                                 '--add-exports=java.desktop/sun.font=ALL-UNNAMED']
+    }
+
+    // 执行
+    def enablePreview = '--enable-preview'
+    tasks.withType(JavaExec) {
+        jvmArgs += enablePreview
+    }
+
+    // 测试
+    tasks.withType(Test).all {
+        jvmArgs += enablePreview
+    }
+}
+
+
+//configurations.all{
+//    resolutionStrategy{
+//        //修改gradle不自动处理版本冲突
+//        // failOnVersionConflict()
+//
+//        //手动指定某个jar版本
+//        //force 'org.slf4j:slf4j-api:1.7.24'
+//    }
+//}
+//
+// gradle生命周期中的钩子方法
+//gradle.projectsEvaluated {
+//    System.setProperty("version", project.version)
+//    System.setProperty("gradleVersion", gradle.gradleVersion)
+//
+//    project.setProperty("version", project.version)
+//}
+//
+//System.setProperty("version", project.version)
+//System.setProperty("gradleVersion", gradle.gradleVersion)
+//
+//project.setProperty("version", project.version)
+
+//gradle.afterProject {
+//    System.setProperty("version", project.version)
+//    System.setProperty("gradleVersion", gradle.gradleVersion)
+//
+//    project.setProperty("version", project.version)
+//}
+

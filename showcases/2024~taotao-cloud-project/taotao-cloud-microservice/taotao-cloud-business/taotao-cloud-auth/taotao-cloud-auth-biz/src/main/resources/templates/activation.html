@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{activation-layout}">
+
+<body>
+    <title layout:fragment="title">设备激活</title>
+
+    <div layout:fragment="content">
+        <div class="col">
+            <div class="text-h4 text-weight-bolder">设备激活</div>
+        </div>
+        <div class="col">
+            <div class="text-subtitle2">
+                请输入您设备上显示的代码
+            </div>
+        </div>
+        <div class="col" style="width: 90%">
+            <form th:action="@{/oauth2/device_verification}" method="post">
+                <div class="column items-center q-mb-md">
+                    <div class="col" style="width: 90%">
+                        <q-input name="user_code" outlined dense mask="XXXX - XXXX" fill-mask v-model="code" :rules="[ val => val !== null && val !== '' || '请输入激活码' ]"/>
+                    </div>
+                    <div class="col" style="width: 90%">
+                        <q-btn color="primary" class="full-width" label="继续" type="submit"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <th:block layout:fragment="script">
+        <script>
+            const app = Vue.createApp({
+                setup() {
+                    code = Vue.ref("");
+
+                    return {
+                        code,
+                    };
+                },
+            });
+
+            app.use(Quasar);
+            Quasar.iconSet.set(Quasar.iconSet.svgMdiV7);
+            app.mount("#q-app");
+        </script>
+    </th:block>
+</body>
+</html>

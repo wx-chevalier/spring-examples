@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/type.proto";
+import "google/protobuf/descriptor.proto";
+import "google/protobuf/duration.proto";
+
+package com.taotao.cloud.sys.api.grpc;
+
+option java_multiple_files = true;
+option java_package = "com.taotao.cloud.sys.api.grpc";
+option java_outer_classname = "DictServiceProto";
+//option objc_class_prefix = "HLW";
+
+service DictService {
+  rpc findByCode (DictRequest) returns (DictResponse){}
+  rpc test (DictTestRequest) returns (DictResponse){}
+}
+
+message DictRequest {
+  string code = 1;
+}
+
+message DictResponse {
+  int64 id = 1;
+  string dictName = 2;
+  string dictCode = 3;
+  string description = 4;
+  int32 sortNum = 5;
+  string remark = 6;
+}
+
+message DictTestRequest {
+  bool reply = 1;
+}

@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/type.proto";
+import "google/protobuf/descriptor.proto";
+import "google/protobuf/duration.proto";
+
+package com.taotao.cloud.sys.api.grpc;
+
+option java_multiple_files = true;
+option java_package = "com.taotao.cloud.sys.api.grpc";
+option java_outer_classname = "UserServiceProto";
+//option objc_class_prefix = "HLW";
+
+service UserService {
+  rpc findUserInfoByUsername (FindUserInfoByUsernameRequest) returns (FindUserInfoByUsernameResponse){}
+  rpc getUserInfoBySocial (GetUserInfoBySocialRequest) returns (GetUserInfoBySocialResponse){}
+  rpc getSysSecurityUser (GetSysSecurityUserRequest) returns (GetSysSecurityUserResponse){}
+}
+
+message FindUserInfoByUsernameRequest {
+  string username = 1;
+}
+
+message FindUserInfoByUsernameResponse {
+  int64 id = 1;
+  string nickname = 2;
+  string username = 3;
+  string phone = 4;
+  int32 sex = 5;
+}
+
+message GetUserInfoBySocialRequest {
+  string providerId = 1;
+  string providerUserId = 2;
+}
+
+message GetUserInfoBySocialResponse {
+  int64 userId = 1;
+  string account = 2;
+  string username = 3;
+  string nickname = 4;
+  string password = 5;
+}
+
+message GetSysSecurityUserRequest {
+  string nicknameOrUserNameOrPhoneOrEmail = 1;
+}
+
+message GetSysSecurityUserResponse {
+  int64 userId = 1;
+  string account = 2;
+  string username = 3;
+  string nickname = 4;
+  string password = 5;
+}

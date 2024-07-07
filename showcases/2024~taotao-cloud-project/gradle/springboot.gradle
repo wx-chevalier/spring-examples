@@ -1,0 +1,203 @@
+apply plugin: 'application'
+
+//https://docs.spring.io/spring-boot/docs/3.0.3/gradle-plugin/reference/htmlsingle/
+apply plugin: 'org.springframework.boot'
+
+/* 依赖管理，用来传递spring的依赖 */
+//https://docs.spring.io/dependency-management-plugin/docs/current-SNAPSHOT/reference/html/
+//apply plugin: 'io.spring.dependency-management'
+
+// gradle打jar包，去掉外部依赖的jar 将依赖包复制到lib目录 其中$JAVA_HOME/jre/lib/ext是固定的，后面追加冒号，冒号后面跟上外部依赖jar包所在路径
+//nohup java -Djava.ext.dirs=$JAVA_HOME/jre/lib/ext:/data/middleplateform/hicon-area/lib -jar hicon-area-1.0-SNAPSHOT.jar &
+task copyJar(type: Copy) {
+    // 清除现有的lib目录
+    delete "${project.layout.buildDirectory.asFile.get()}\\libs\\lib"
+    from configurations.runtimeClasspath
+    into "${project.layout.buildDirectory.asFile.get()}\\libs\\lib"
+    from configurations.compileClasspath
+    into "${project.layout.buildDirectory.asFile.get()}\\libs\\lib"
+}
+
+application {
+    //指定应用程序的入口点（主类）
+    //mainClass = project.mainClassName
+    //自定义应用程序的启动脚本和默认JVM参数。
+    //applicationDefaultJvmArgs = ['-Xmx512m', '-Dmyapp.mode=prod']
+    //applicationDistribution.from(fileTree('src/main/scripts'))
+    //配置应用程序的资源文件和图标。
+    //icon = 'src/main/resources/app-icon.ico'
+    //defaultJvmArgs = ['-Dmyapp.env=prod']
+    //executableDir = 'custom_bin_dir'
+}
+
+bootJar {
+    // 排除所有的jar
+    //excludes = ["*.jar"]
+    // lib目录的清除和复制任务
+    //dependsOn copyJar
+
+    manifest {
+        attributes project.tasks.jar.manifest.attributes
+        //'Class-Path': configurations.runtimeClasspath.files.collect { "lib/$it.name" }.join(' ')
+    }
+
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+
+    //layered {
+    //    application {
+    //        intoLayer("spring-boot-loader") {
+    //            include "org/springframework/boot/loader/**"
+    //        }
+    //        intoLayer("application")
+    //    }
+    //    dependencies {
+    //        intoLayer("application") {
+    //            includeProjectDependencies()
+    //        }
+    //        intoLayer("snapshot-dependencies") {
+    //            include "*:*:*SNAPSHOT"
+    //        }
+    //        intoLayer("dependencies")
+    //    }
+    //    layerOrder = ["dependencies", "spring-boot-loader", "snapshot-dependencies", "application"]
+    //}
+}
+
+//springBoot {
+//    buildInfo {
+//        properties {
+//            artifact = 'example-app'
+//            version = '1.2.3'
+//            group = 'com.example'
+//            name = 'Example application'
+//
+//            additional = [
+//                    'a': 'alpha',
+//                    'b': 'bravo'
+//            ]
+//        }
+//    }
+//}
+
+//nativeBuild {
+////    buildArgs = ["--initialize-at-run-time=org.apache.commons.logging.LogFactoryService,org.apache.commons.logging.LogFactory"]
+//    buildArgs = ["--no-fallback",
+//                 "--initialize-at-build-time=org.springframework.util.unit.DataSize",
+//                 "--initialize-at-build-time=org.slf4j.MDC",
+//                 "--initialize-at-build-time=ch.qos.logback.classic.Level",
+//                 "--initialize-at-build-time=ch.qos.logback.classic.Logger",
+//                 "--initialize-at-build-time=ch.qos.logback.core.util.StatusPrinter",
+//                 "--initialize-at-build-time=ch.qos.logback.core.status.StatusBase",
+//                 "--initialize-at-build-time=ch.qos.logback.core.status.InfoStatus",
+//                 "--initialize-at-build-time=ch.qos.logback.core.spi.AppenderAttachableImpl",
+//                 "--initialize-at-build-time=org.slf4j.LoggerFactory",
+//                 "--initialize-at-build-time=ch.qos.logback.core.util.Loader",
+//                 "--initialize-at-build-time=org.slf4j.impl.StaticLoggerBinder",
+//                 "--initialize-at-build-time=ch.qos.logback.classic.spi.ThrowableProxy",
+//                 "--initialize-at-build-time=ch.qos.logback.core.CoreConstants",
+//                 "--initialize-at-build-time=java.net.Inet6Address",
+//                 "--report-unsupported-elements-at-runtime",
+//                 "--allow-incomplete-classpath",
+//                 "--trace-class-initialization=org.apache.commons.logging.LogFactory,org.apache.commons.logging.LogFactoryService",
+//                 "-H:+ReportExceptionStackTraces",
+//                 "--trace-object-instantiation=java.net.Inet6Address"
+//    ]
+//}
+
+bootBuildImage {
+    builder = "registry.cn-hangzhou.aliyuncs.com/taotao-cloud-project/taotao-cloud-builder:latest"
+    runImage = "registry.cn-hangzhou.aliyuncs.com/taotao-cloud-project/taotao-cloud-run:base-cnb"
+    imageName = "registry.cn-hangzhou.aliyuncs.com/taotao-cloud-project/taotao-cloud-monitor:${project.version}"
+    pullPolicy = "IF_NOT_PRESENT"
+    environment = [
+            "BPL_SPRING_CLOUD_BINDINGS_ENABLED": "true",
+
+            "BP_IMAGE_LABELS"                  : "application_name=taotao-cloud-monitor application_version=2024.07",
+            "BP_OCI_AUTHORS"                   : "981376577@qq.com",
+            //"BP_OCI_CREATED": " ",
+            //"BP_OCI_DESCRIPTION": " ",
+            //"BP_OCI_DOCUMENTATION": " ",
+            //"BP_OCI_LICENSES": " ",
+            //"BP_OCI_REF_NAME": " ",
+            //"BP_OCI_REVISION": " ",
+            //"BP_OCI_SOURCE": " ",
+            //"BP_OCI_TITLE": " ",
+            //"BP_OCI_URL": " ",
+            //"BP_OCI_VENDOR": " ",
+            //"BP_OCI_VERSION": " ",
+
+            "BPE_APPLICATION_NAME"             : "taotao-cloud-monitor",
+            "BPE_APPLICATION_VERSION"          : "2024.07",
+            "BPE_JMX_ENABLED"                  : "true",
+            "BPE_LANG"                         : "zh_CN.UTF-8",
+            "BPE_JMX_PORT"                     : "5000",
+            "BPE_DEBUG_ENABLED"                : "true",
+            "BPE_DEBUG_PORT"                   : "8000",
+            "BPE_DEBUG_SUSPEND"                : "true",
+            "BPE_APPEND_JAVA_TOOL_OPTIONS"     : " -Xms512m " +
+                    "-Xmx2g " +
+                    "-Xss256k " +
+                    "-XX:MaxDirectMemorySize=256m " +
+                    "-XX:SurvivorRatio=8 " +
+                    "-XX:+UseCompressedOops " +
+                    "-XX:+UseCompressedClassPointers " +
+                    "-XX:+SegmentedCodeCache " +
+                    "-XX:+PrintCommandLineFlags " +
+                    "-XX:+ExplicitGCInvokesConcurrent " +
+                    "-XX:+HeapDumpOnOutOfMemoryError " +
+                    "-XX:MetaspaceSize=256m " +
+                    "-XX:MaxMetaspaceSize=256m " +
+                    "-verbose:gc " +
+                    "-XX:ParallelGCThreads=4 " +
+                    "-Djava.security.egd=file:/dev/./urandom " +
+                    "-Dfile.encoding=utf-8 " +
+                    "-javaagent:/skywalking/agent/skywalking-agent.jar " +
+                    "-Dskywalking.agent.service_name=taotao-cloud-monitor " +
+                    "-Dskywalking.agent.authentication=taotao-cloud " +
+                    "-Dskywalking.logging.file_name=taotao-cloud-monitor.skywalking.log " +
+                    "-Dskywalking.logging.level=INFO " +
+                    "-Dskywalking.logging.dir=/root/logs/taotao-cloud-monitor " +
+                    "-Dskywalking.collector.backend_service=192.168.10.220:11800 " +
+                    "-Dspring.profiles.active=dev ",
+
+            "BP_JVM_VERSION"                   : "11.*",
+            "BP_JVM_TYPE"                      : "JRE",
+            "BPL_JMX_ENABLED"                  : "true",
+            "BPL_JMX_PORT"                     : "5000",
+
+            "BP_DEBUG_ENABLED"                 : "true",
+            "BPL_DEBUG_ENABLED"                : "true",
+            "BPL_DEBUG_PORT"                   : "8000",
+            "BPL_DEBUG_SUSPEND"                : "true",
+
+            //"HTTP_PROXY": "http://proxy.example.com",
+            //"HTTPS_PROXY": "http://proxy.example.com",
+    ]
+    bindings = ["/tmp/logs/taotao-cloud-monitor:/root/logs", "/opt/cloud/apache-skywalking-apm-bin/agent/:/skywalking/agent"]
+    cleanCache = false
+    verboseLogging = true
+    publish = true
+
+    docker {
+        //使用docker
+        //host = "tcp://127.0.0.1:2376"
+        //tlsVerify = true
+        //certPath = "/home/users/.minikube/certs"
+
+        //使用podman @since 2.7.0
+        //host = "unix:///run/user/1000/podman/podman.sock"
+        //bindHostToBuilder = true
+
+        builderRegistry {
+            username = findProperty("TAOTAO_CLOUD_REGISTRY_USERNAME") ?: System.getenv("TAOTAO_CLOUD_REGISTRY_USERNAME")
+            password = findProperty("TAOTAO_CLOUD_REGISTRY_PASSWORD") ?: System.getenv("TAOTAO_CLOUD_REGISTRY_PASSWORD")
+            url = "registry.cn-hangzhou.aliyuncs.com"
+        }
+
+        publishRegistry {
+            username = findProperty("TAOTAO_CLOUD_REGISTRY_USERNAME") ?: System.getenv("TAOTAO_CLOUD_REGISTRY_USERNAME")
+            password = findProperty("TAOTAO_CLOUD_REGISTRY_PASSWORD") ?: System.getenv("TAOTAO_CLOUD_REGISTRY_PASSWORD")
+            url = "registry.cn-hangzhou.aliyuncs.com"
+        }
+    }
+}

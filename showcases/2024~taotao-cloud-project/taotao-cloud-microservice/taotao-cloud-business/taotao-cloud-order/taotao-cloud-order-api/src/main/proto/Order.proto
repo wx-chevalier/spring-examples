@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package com.taotao.cloud.order.api.grpc;
+
+option java_multiple_files = true;
+option java_package = "com.taotao.cloud.order.api.grpc";
+option java_outer_classname = "OrderServiceProto";
+//option objc_class_prefix = "HLW";
+
+service OrderService {
+  rpc insertOrder (OrderRequest) returns (OrderResponse){}
+}
+
+message OrderRequest {
+  string id = 1;
+}
+
+message OrderResponse {
+  bool reply = 1;
+}
+

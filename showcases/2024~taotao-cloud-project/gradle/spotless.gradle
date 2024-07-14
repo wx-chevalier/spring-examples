@@ -28,10 +28,10 @@ spotless {
         //eclipse('4.26').configFile('eclipse-prefs.xml')
 
         // apply a specific flavor of google-java-format
-        //googleJavaFormat('1.16.0').aosp().reflowLongStrings().groupArtifact('com.google.googlejavaformat:google-java-format')
+        googleJavaFormat('1.16.0').aosp().reflowLongStrings().groupArtifact('com.google.googlejavaformat:google-java-format')
 
         //https://search.maven.org/artifact/com.palantir.javaformat/palantir-java-format/
-        palantirJavaFormat('2.46.0')
+//        palantirJavaFormat('2.46.0')
         licenseHeaderFile rootProject.file('code-analysis/spotless/license-header')
     }
 

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.0</version>
+    </parent>
+
+    <groupId>cn.javastack</groupId>
+    <artifactId>spring-boot-best-practice</artifactId>
+    <version>1.0</version>
+
+    <modules>
+        <module>spring-boot-quick-start</module>
+        <module>spring-boot-mail</module>
+        <module>spring-boot-web</module>
+        <module>spring-boot-webflux</module>
+        <module>spring-boot-logging</module>
+        <module>spring-boot-test</module>
+        <module>javastack-spring-boot-starter</module>
+        <module>javastack-spring-boot-starter-sample</module>
+        <module>spring-boot-properties</module>
+        <module>spring-boot-redis</module>
+        <module>spring-boot-mongodb</module>
+        <module>spring-boot-elasticsearch</module>
+        <module>spring-boot-session</module>
+        <module>spring-boot-undertow</module>
+        <module>spring-boot-docker</module>
+        <module>spring-boot-features</module>
+        <module>spring-boot-application</module>
+        <module>spring-boot-datasource</module>
+        <module>spring-boot-jpa</module>
+		<module>spring-boot-activemq</module>
+        <module>spring-boot-rabbitmq</module>
+		<module>spring-boot-kafka</module>
+        <module>spring-boot-cache</module>
+        <module>spring-boot-mybatis</module>
+        <module>spring-boot-mybatis-plus</module>
+        <module>spring-boot-flyway</module>
+        <module>spring-boot-mapstruct</module>
+        <module>spring-boot-jasypt</module>
+        <module>spring-boot-knife4j</module>
+        <module>spring-boot-tinylog</module>
+        <module>spring-boot-admin-server</module>
+        <module>spring-boot-admin-client</module>
+        <module>spring-boot-schedule</module>
+        <module>spring-boot-quartz</module>
+        <module>spring-boot-graalvm</module>
+        <module>spring-boot-war</module>
+		<module>spring-boot-actuator</module>
+        <module>spring-boot-aop</module>
+    </modules>
+
+    <packaging>pom</packaging>
+    <name>spring-boot-best-practice</name>
+    <description>Spring Boot Best Practice</description>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-properties-migrator</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

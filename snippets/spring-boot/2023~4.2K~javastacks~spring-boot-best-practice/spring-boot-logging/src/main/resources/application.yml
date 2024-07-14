@@ -1,0 +1,16 @@
+spring:
+  profiles:
+    active: dev
+  output:
+    ansi:
+      enabled: always
+logging:
+#  level:
+#    root: INFO
+#    org.springframework: WARN
+#  file:
+#    name: ./logs/javastack.log
+#  logback:
+#    rollingpolicy:
+#      max-file-size: 100MB
+  register-shutdown-hook: true
